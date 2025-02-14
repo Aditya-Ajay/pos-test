@@ -5,6 +5,7 @@ import logo from "../assets/solis_pos.png"
 import scanner from "../assets/scanner.png"
 import CustomerInformation from './CustomerInformation';
 import {fetchProductById} from '../redux/Product/ProductSlice'
+const BASE_URL = import.meta.env.VITE_BASE_URL
 
 
 
@@ -19,14 +20,14 @@ const handleDelete = (id)=>{
   dispatch(removeProduct(id))
 }
 
-// const handleSubmit = ()=>{
-//   dispatch(fetchProductById(barcodeNumber.current.value))
-// }
+
 
 const handleChange =(e) => {
   const value = e.target.value;
+  var length = Math.log(value) * Math.LOG10E + 1 | 0;
+  console.log(length)
   console.log("Input value:", value); // Log the input value
-  if (value == 2) {
+  if (length == 9) {
     console.log("Dispatching fetchProductById"); // Log before dispatching
     const action  = dispatch(fetchProductById(value))
     console.log(action)
@@ -140,19 +141,19 @@ const handleChange =(e) => {
                 </thead>
                 <tbody>
                   {products.map((product) => (
-                    <tr key={product?.id} className="border-t">
+                    <tr key={product?._id} className="border-t">
                       <td className="p-4">
                         <img
                           src={product.images}
                           className="w-12 h-12 rounded-lg object-cover"
                         />
                       </td>
-                      <td className="p-4">{product?.id}</td>
-                      <td className="p-4">{product?.meta?.barcode}</td>
-                      <td className="p-4">{product?.category}</td>
-                      <td className="p-4">{product?.price}</td>
+                      <td className="p-4">{product?._id}</td>
+                      <td className="p-4">{product?.barcode}</td>
+                      <td className="p-4">{product?.name}</td>
+                      <td className="p-4">{product?.currentPrice}</td>
                       <td className="p-4">1</td>
-                      <td className="p-4">{product?.price}</td>
+                      <td className="p-4">{product?.currentPrice}</td>
                       <td className="p-4 text-red-500">×</td>
                     </tr>
                   ))}

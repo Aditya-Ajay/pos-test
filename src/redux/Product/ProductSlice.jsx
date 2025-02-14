@@ -1,15 +1,23 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+const BASE_URL = import.meta.env.VITE_BASE_URL
+
 
 export const fetchProductById = createAsyncThunk(
   "product/fetchById",
   async (productId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`https://dummyjson.com/products/${productId}`);
-      console.log('testing ')
-      console.log(response.data)
+      const response = await axios.get(`${BASE_URL}/inventory/${productId}` , {
+        headers :{
+          Authorization : `Bearer ${localStorage.getItem("token")}`
+    
+        }
+      });
+      console.log(localStorage.getItem("token"))
       return response?.data;
     } catch (err) {
+      console.log("5" + 3)
+      console.log(localStorage.getItem("token"))
       return rejectWithValue(`Error fetching the product: ${err.message}`);
     }
   }
