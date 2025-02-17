@@ -13,6 +13,7 @@ export const fetchProductById = createAsyncThunk(
     
         }
       });
+      
       console.log(localStorage.getItem("token"))
       return response?.data;
     } catch (err) {
@@ -26,13 +27,14 @@ export const fetchProductById = createAsyncThunk(
 export const ProductSlice = createSlice({
   name: "Product",
   initialState: {
-    products: [], // Changed from `product: null` to `products: []` to store multiple
+    products: [],
     error: false,
     pending: false,
   },
   reducers : {
     removeProduct : (state , action)=>{
-        state.products = state.products.filter((product)=>product?.id !== action.payload)
+      console.log(action.payload)
+        state.products = state.products.filter((product)=>product?._id !== action.payload)
     }
   },
   extraReducers: (builder) => {
@@ -46,14 +48,19 @@ export const ProductSlice = createSlice({
         state.pending = false;
       })
       .addCase(fetchProductById.fulfilled, (state, action) => {
+        console.log("PAYLOAD RECEIVED" , action.payload)
         state.error = false;
         state.pending = false;
         if (action.payload) {
-          // Ensure unique products by checking if the ID already exists
-          const exists = state.products.some(product => product.id === action.payload.id);
-          if (!exists) {
+          const exists = state.products.some(product => product._id === action.payload._id);
+          console.log("PRODUCT ID : " , action.payload.id)
+          console.log(exists)
+           if (exists) {
+          alert("Product already exists")
+           }else{
             state.products.push(action.payload);
-          }
+           }
+          
         }
       });
   },
