@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
+import { useSelector } from 'react-redux';
 
 function CustomerInformation({open  , setOpen}) {
+    const customer = useSelector((state) => state?.customer?.customer);
   const [formData, setFormData] = useState({
-    mobileNumber: '',
-    fullName: '',
-    emailAddress: '',
-    address: '',
+    mobileNumber: customer?.phone || '',
+    fullName: customer?.name ||  '',
+    emailAddress: customer?.email || '',
+    address: customer?.address ||  '',
     cityDistrictTown: '',
     state: '',
     pinCode: '',

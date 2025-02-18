@@ -1,15 +1,25 @@
 import React, { useState, useEffect  , useRef} from 'react';
-import { Search, Bell, Settings, ChevronDown, Mail, UserCircle2, Scan, ArrowBigLeft, ArrowBigRight } from 'lucide-react';
+import { Search, Bell, Settings, ChevronDown, Mail, UserCircle2, Scan, ArrowBigLeft, ArrowBigRight, Edit2 } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import logo from "../assets/solis_pos.png"
 import scanner from "../assets/scanner.png"
 import CustomerInformation from './CustomerInformation';
 import { fetchProductById, removeProduct } from '../redux/Product/ProductSlice';
-import { Pencil, CreditCard, Banknote ,  X } from 'lucide-react';
+import { Pencil, CreditCard, Banknote ,  X  , UserPlus , Edit} from 'lucide-react';
+import { fetchCustomerByNumber } from '../redux/Customer/CustomerSlice';
 
 function App() {
   const products = useSelector((state) => state?.product?.products);
+  const customer = useSelector((state) => state?.customer?.customer);
+  const [confirmDisable , setConfirmDisable] = useState(true)
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [countryCode , setCountryCode] = useState('+91')
+  const [finalNumber , setFinalNumber] = useState(null)
   const dispatch = useDispatch();
+  console.log(customer)
+
+
+
 
   function CancelModal({ isOpen, onClose, onConfirm }) {
     if (!isOpen) return null;
@@ -35,7 +45,7 @@ function App() {
   
             <h2 className="text-xl text-center text-[#F87171] font-medium mb-2">
               Want to cancel this order?
-              
+
             </h2>
             
             <p className="text-gray-400 text-center text-sm mb-6">
@@ -87,10 +97,20 @@ function App() {
 useEffect(() => {
   if (products.length === 0) {
     setDisable(true); // Disable the action if there are no products
+    setConfirmDisable(true)
   } else {
     setDisable(false); // Enable the action if there are products
+    setConfirmDisable(false)
   }
 }, [products]); 
+
+useEffect(()=>{
+  if (phoneNumber.replace(/\D/g, "").length === 10) {
+   let number = `${countryCode}-${phoneNumber}`
+   dispatch(fetchCustomerByNumber(number))
+   console.log(customer)
+  }
+},[phoneNumber])
 
   // Update total and grandTotal whenever products change
   useEffect(() => {
@@ -285,15 +305,41 @@ const handleAmountChange = ()=>{
             <div className="bg-white px-8 pt-2 rounded-lg shadow-sm pb-8">
               <h2 className="text-xl font-semibold mb-2">Order Summary</h2>
               <p className="text-gray-500 text-sm mb-6">Transaction ID #1982761892</p>
+              <div className="relative flex items-center gap-2 mb-6">
+              {
+  Object.keys(customer).length == 0 ? (
+    <>
+      <input
+        type="text"
+        placeholder="+91  Add Phone Number"
+        onChange={(e) => { setPhoneNumber(e.target.value); }}
+        value={phoneNumber}
+        className="flex-1 px-4 py-2 rounded-lg pl-10" // Extra padding for icon space
+        style={{ border: "1px solid rgba(195, 195, 253, 1)" }}
+      />
+      <button
+        className="absolute right-0 p-2 pl-4 pr-4 text-gray-600 transition"
+        style={{ background: 'rgba(195, 195, 253, 1)' }}
+        onClick={() => setOpen(!open)}
+      >
+        <UserPlus size={24} style={{ color: "rgba(85, 66, 186, 1)" }} />
+      </button>
+    </>
+  ) : (
+    <div className="flex items-center">
+    <p className="mr-4">{customer.name}</p>
+    <button
+      className="flex ml-40 text-blue-500 hover:text-blue-700"
+      onClick={() => {setOpen(!open)}}
+    >
+   <Edit />
+    </button>
+  </div>
+  )
+}
 
-              <div className="flex items-center gap-2 mb-6">
-                <input
-                  type="text"
-                  placeholder="+ Add Phone Number"
-                  className="flex-1 px-4 py-2 border border-gray-200 rounded-lg"
-                  onClick={() => setOpen(!open)}
-                />
-              </div>
+        
+    </div>
 
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between">
@@ -343,7 +389,7 @@ const handleAmountChange = ()=>{
                 <div className="text-2xl font-bold">$ {grandTotal}</div>
               </div>
 
-              <button className="w-full mt-5 py-3 bg-green-500 text-white rounded-sm" onClick={()=>setNextPage(true)}>
+              <button className="w-full mt-5 py-3 bg-green-500 text-white rounded-sm" disabled={confirmDisable} onClick={()=>setNextPage(true)}>
                Confirm Order
               </button>
             </div>
