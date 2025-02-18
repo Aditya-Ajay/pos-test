@@ -10,6 +10,7 @@ import { Pencil, CreditCard, Banknote ,  X } from 'lucide-react';
 function App() {
   const products = useSelector((state) => state?.product?.products);
   const dispatch = useDispatch();
+  
   function CancelModal({ isOpen, onClose, onConfirm }) {
     if (!isOpen) return null;
   
