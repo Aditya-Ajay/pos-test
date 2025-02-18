@@ -14,7 +14,7 @@ function App() {
   function CancelModal({ isOpen, onClose, onConfirm }) {
     if (!isOpen) return null;
 
-    
+
   
     return (
       <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center">
@@ -43,7 +43,7 @@ function App() {
   
             <div className="flex gap-3">
               <button
-                onClick={onConfirm}
+                onClick={()=>{window.location.reload()}}
                 className="flex-1 bg-[#EF4444] text-white py-2.5 px-4 rounded-lg hover:bg-[#DC2626] transition-colors font-medium"
               >
                 Yes
