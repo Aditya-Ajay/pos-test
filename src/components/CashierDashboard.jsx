@@ -35,6 +35,7 @@ function App() {
   
             <h2 className="text-xl text-center text-[#F87171] font-medium mb-2">
               Want to cancel this order?
+              
             </h2>
             
             <p className="text-gray-400 text-center text-sm mb-6">
