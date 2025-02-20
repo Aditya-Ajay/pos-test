@@ -1,5 +1,5 @@
 import React, { useState, useEffect  , useRef} from 'react';
-import { Search, Bell, Settings, ChevronDown, Mail, UserCircle2, Scan, ArrowBigLeft, ArrowBigRight, Edit2 } from 'lucide-react';
+import { Search, Bell, Settings, ChevronDown, Mail, UserCircle2, Scan,User, ArrowBigLeft, ArrowBigRight, Edit2 } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import logo from "../assets/solis_pos.png"
 import scanner from "../assets/scanner.png"
@@ -7,6 +7,7 @@ import CustomerInformation from './CustomerInformation';
 import { fetchProductById, removeProduct } from '../redux/Product/ProductSlice';
 import { Pencil, CreditCard, Banknote ,  X  , UserPlus , Edit} from 'lucide-react';
 import { fetchCustomerByNumber } from '../redux/Customer/CustomerSlice';
+import Setting from "../assets/Setting.png"
 
 function App() {
   const products = useSelector((state) => state?.product?.products);
@@ -15,9 +16,13 @@ function App() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [countryCode , setCountryCode] = useState('+91')
   const [finalNumber , setFinalNumber] = useState(null)
+  const [downPayment , setDownPayment] = useState('')
+  const [layawayTenure , setLayawayTenure] = useState('')
   const dispatch = useDispatch();
   console.log(customer)
 
+
+  let text = 'Confirm Order'
 
 
 
@@ -76,7 +81,7 @@ function App() {
   const [grandTotal, setGrandTotal] = useState(0);
   const [open, setOpen] = useState(false);
   const [disable ,  setDisable] = useState(true)
-  const [nextPage , setNextPage] = useState(false)
+  const [nextPage , setNextPage] = useState(true)
   const [showModal  , setShowModal] = useState(false)
   const discountPercentage  = useRef(null);
   const discountAmount = useRef(null);
@@ -172,31 +177,61 @@ const handleAmountChange = ()=>{
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-12">
-            <img src={logo} alt="Logo" className="w-22 h-12" />
+      <header className="bg-white border-b border-gray-200 px-6 py-3">
+        <div className="flex items-center justify-between">
+          {/* Logo and Search */}
+          <div className="flex items-center flex-1 gap-8">
+            {/* Logo */}
+            <div className="flex items-center gap-2 " style={{width : '200px'}}>
+      
+            <img src={logo} alt=""/>
+            </div>
+
+            {/* Search Bar */}
+            <div className="max-w-xl flex-1 relative ml-20">
+  <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" style={{color : '#5542BA'}}/>
+  <input
+    type="text"
+    placeholder="Search"
+    className="pl-10 pr-4 py-2 bg-white-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent shadow-lg"
+    style={{ width: '75%' }}
+  />
+</div>
+
           </div>
-          <div className="flex items-center gap-4">
-            <div className="relative flex-1 max-w-lg">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-              <input
-                type="text"
-                placeholder="Search"
-                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              />
+
+          {/* Right Side */}
+          <div className="flex items-center gap-6">
+            {/* Store Selector */}
+            <div className="flex items-center gap-2 bg-white shadow-lg p-3 rounded-lg">
+  <span className="text-gray-600" style={{ color: "#5542BA" }}>Store:</span>
+  <select className="bg-transparent border-none text-gray-800 font-medium focus:outline-none cursor-pointer">
+    <option>Jewels Galleria</option>
+  </select>
+</div>
+
+
+            {/* Icons */}
+            <div className="flex items-center gap-4">
+              <button className="p-2 hover:bg-gray-100 rounded-lg">
+                <Mail className="w-5 h-5 text-gray-600" style={{color : '#5542BA'}} />
+              </button>
+              <button className="p-2 hover:bg-gray-100 rounded-lg">
+                <Bell className="w-5 h-5 text-gray-600"  style={{color : '#5542BA'}}/>
+              </button>
+              <button className="p-2 hover:bg-gray-100 rounded-lg">
+                <Settings className="w-5 h-5 text-gray-600" style={{color : '#5542BA'}} />
+              </button>
             </div>
-            <div className="flex items-center gap-2 px-4 py-2 border rounded-lg">
-              <span>Store: Jewels Galleria</span>
-              <ChevronDown className="h-4 w-4" />
-            </div>
-            <div className="flex items-center gap-2 border px-2 py-2 rounded-sm">
-              <img
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=32&h=32"
-                alt="Profile"
-                className="w-8 h-8 rounded-full"
-              />
-              <span>John Smith</span>
+
+            {/* User Profile */}
+            <div className="flex items-center gap-2 bg-white shadow-md  p-3 rounded-lg">
+              <div className="flex items-center gap-2 cursor-pointer">
+                <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                  <User className="w-5 h-5 text-purple-600" />
+                </div>
+                <span className="font-medium">John Smith</span>
+              </div>
             </div>
           </div>
         </div>
@@ -207,18 +242,19 @@ const handleAmountChange = ()=>{
 
       {/* Main Content */}
       <div className="bg-white shadow-sm mt-6 mx-auto pt-2 pb-0.1 pl-2 pr-2 max-w-7xl">
-        <div className="flex justify-between items-center mb-6 py-2">
-          <button className="bg-[#5542BA] text-white px-6 py-2 rounded-sm">
-            View Orders
-          </button>
+        <div className="flex justify-between items-center mb-6 pl-2 py-2">
+        <h1 class="font-weight-800">
+  HELLO SMITH
+  <p class="font-normal text-gray-500">Let's create orders</p>
+</h1>
+
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 px-4 py-2 border rounded-lg bg-white">
-              <span>23 Dec</span>
-              <ChevronDown className="h-4 w-4" />
-            </div>
-            <Mail className="h-6 w-6 text-gray-600" />
-            <Bell className="h-6 w-6 text-gray-600" />
-            <Settings className="h-6 w-6 text-gray-600" />
+          <button className="px-4 py-2 text-[#5542BA] bg-[#5542BA] text-white">
+                Pay Layaways
+              </button>
+          <button className="px-4 py-2 text-[#5542BA] bg-[#5542BA] text-white ">
+               View Orders
+              </button>
           </div>
         </div>
       </div>
@@ -227,25 +263,23 @@ const handleAmountChange = ()=>{
         <div className="flex gap-6">
           <div className="flex-1">
             <div className="flex gap-3 mb-6">
-              <button className="px-4 py-2 border border-[#5542BA] text-[#5542BA] bg-white rounded-lg">
+              <button className="px-4 py-2 border border-[#5542BA] text-[#5542BA] bg-white border-color" >
                 Create Orders
               </button>
-              <button className="px-4 py-2 border border-gray-200 text-gray-600 rounded-lg">
+              <button className="px-4 py-2 text-[#5542BA]  border-color">
                 Add Returns
               </button>
-              <button className="px-4 py-2 border border-gray-200 text-gray-600 rounded-lg">
+              <button className="px-4 py-2 text-[#5542BA]  border-color">
                 Repair Order
               </button>
-              <button className="px-4 py-2 border border-gray-200 text-gray-600 rounded-lg">
+              <button className="px-4 py-2 text-[#5542BA]  border-color">
                 Custom
               </button>
               <div className="flex-1" />
-              <button className="px-4 py-2 bg-[#5542BA] text-white rounded-lg">
-                + Add Layaways
-              </button>
+
             </div>
 
-            <div className="bg-white p-6 rounded-lg shadow-sm">
+            <div className="bg-white p-6 rounded-lg shadow-sm h-100vh">
               <div className="flex items-center gap-4 mb-6 px-2" style={{ backgroundColor: "#f8f8fc" }}>
                 <div className="p-4 bg-gray-50 rounded-lg">
                   <img src={scanner} alt="Scanner" />
@@ -258,7 +292,7 @@ const handleAmountChange = ()=>{
                 />
               </div>
 
-              <table className="w-full">
+              <table className="w-full ">
                 <thead className="bg-gray" style={{ backgroundColor: "#FFF9EB" }}>
                   <tr>
                     <th className="text-left p-4">Image</th>
@@ -302,7 +336,7 @@ const handleAmountChange = ()=>{
           </div>
 {!nextPage ?
           <div className="w-100">
-            <div className="bg-white px-8 pt-2 rounded-lg shadow-sm pb-8">
+            <div className="bg-white px-8 pt-2  shadow-sm pb-8" style={{borderRadius :"4px"}}>
               <h2 className="text-xl font-semibold mb-2">Order Summary</h2>
               <p className="text-gray-500 text-sm mb-6">Transaction ID #1982761892</p>
               <div className="relative flex items-center gap-2 mb-6">
@@ -389,8 +423,8 @@ const handleAmountChange = ()=>{
                 <div className="text-2xl font-bold">$ {grandTotal}</div>
               </div>
 
-              <button className="w-full mt-5 py-3 bg-green-500 text-white rounded-sm" disabled={confirmDisable} onClick={()=>setNextPage(true)}>
-               Confirm Order
+              <button className="w-full mt-5 py-3 font-bold rounded-sm" style={{backgroundColor : "rgba(118, 208, 157, 0.32)" , color : "rgba(24, 147, 77, 1)"}} disabled={confirmDisable} onClick={()=>setNextPage(true)}>
+               {text}
               </button>
             </div>
           </div>
@@ -414,11 +448,51 @@ const handleAmountChange = ()=>{
               <p className="text-sm text-gray-600 text-center mb-2">Amount Payable</p>
               <p className="text-3xl font-bold text-center text-gray-800">${grandTotal}</p>
             </div>
-    
-            <button className="w-full bg-indigo-100 text-indigo-600 font-medium py-3 rounded-lg mb-6 hover:bg-indigo-200 transition-colors">
-              Save Order
+
+            <button className="w-full text-indigo-600 font-medium py-3 rounded-lg mb-6 hover:bg-indigo-200 transition-colors" style={{border : '1px solid #C3C3FD'}}>
+              + Add Layaways
             </button>
-    
+{/* layway detail section  */}
+
+<div className="border border-gray-200 rounded-lg p-6">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-semibold text-gray-900">Layaways Details</h2>
+              <button className="text-gray-400 hover:text-gray-600">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="mb-6">
+              <label className="flex items-center gap-2 mb-4">
+                <span className="text-gray-700">Add down payment amount</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Enter Amount"
+                value={downPayment}
+                onChange={(e) => setDownPayment(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              />
+            </div>
+            <div className="bg-purple-50 rounded-lg p-4 mb-6">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-700">Balance Amount</span>
+                <span className="text-xl font-semibold text-purple-600">$ 45</span>
+              </div>
+            </div>
+
+            <div className="relative">
+              <button
+                onClick={() => setLayawayTenure(layawayTenure ? '' : '3 months')}
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg text-left flex justify-between items-center"
+              >
+                <span className="text-gray-700">
+                  {layawayTenure || 'Choose Layaways Tenure'}
+                </span>
+                <ChevronDown className="w-5 h-5 text-gray-400" />
+              </button>
+            </div>
+          </div>
             <div className="grid grid-cols-3 gap-4 mb-6">
               <PaymentMethod 
                 icon={<img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/receipt.svg" alt="Cheque" className="w-6 h-6" />}

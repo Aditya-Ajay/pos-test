@@ -30,7 +30,7 @@ function CustomerInformation({open  , setOpen}) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center" >
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm " >
       <div className="rounded-lg shadow-lg w-full max-w-2xl p-8 relative" style={{background: 'linear-gradient(360deg, rgba(255, 255, 255, 3) 0%, rgba(240, 240, 254, 1) 100%)'}}>
         <button className="absolute right-4 top-4 text-gray-400 hover:text-gray-600" onClick={() => setOpen(!open)}>
           <X size={24} />

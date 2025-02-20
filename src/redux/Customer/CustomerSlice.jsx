@@ -69,8 +69,22 @@ export const CustomerSlice = createSlice({
             state.pending = false
             state.customer = action.payload
         })
+        .addCase(updateCustomer.pending, (state) => {
+          state.error = false;
+          state.pending = true;
+        })
+        .addCase(updateCustomer.rejected, (state, action) => {
+          state.error = true;
+          state.pending = false;
+          console.log(action.payload); 
+        })
+        .addCase(updateCustomer.fulfilled, (state, action) => {
+          state.error = false;
+          state.pending = false;
+          state.customer = action.payload;
+        });
     }
-    
+  
 })
 
 
