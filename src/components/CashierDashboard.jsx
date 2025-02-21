@@ -7,22 +7,45 @@ import CustomerInformation from './CustomerInformation';
 import { fetchProductById, removeProduct } from '../redux/Product/ProductSlice';
 import { Pencil, CreditCard, Banknote ,  X  , UserPlus , Edit} from 'lucide-react';
 import { fetchCustomerByNumber } from '../redux/Customer/CustomerSlice';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
+
+import bin from "../assets/bin.png"
+import edit from "../assets/edit.png"
 import Setting from "../assets/Setting.png"
+import { createOrder } from '../redux/Order/OrderSlice';
 
 function App() {
   const products = useSelector((state) => state?.product?.products);
   const customer = useSelector((state) => state?.customer?.customer);
+  const order = useSelector((state)=> state?.order?.sucessfull);
+  const orderDetails = useSelector((state)=> state?.order?.order);
+  console.log(orderDetails)
+  const [selectedTenure, setSelectedTenure] = useState("");
+
+
   const [confirmDisable , setConfirmDisable] = useState(true)
+  const [selectedOption, setSelectedOption] = useState("");
   const [phoneNumber, setPhoneNumber] = useState('');
   const [countryCode , setCountryCode] = useState('+91')
   const [finalNumber , setFinalNumber] = useState(null)
   const [downPayment , setDownPayment] = useState('')
   const [layawayTenure , setLayawayTenure] = useState('')
   const dispatch = useDispatch();
+
+
+ 
+
+  
   console.log(customer)
 
 
-  let text = 'Confirm Order'
 
 
 
@@ -81,10 +104,30 @@ function App() {
   const [grandTotal, setGrandTotal] = useState(0);
   const [open, setOpen] = useState(false);
   const [disable ,  setDisable] = useState(true)
-  const [nextPage , setNextPage] = useState(true)
+  const [nextPage , setNextPage] = useState(false)
   const [showModal  , setShowModal] = useState(false)
   const discountPercentage  = useRef(null);
   const discountAmount = useRef(null);
+  const layawayOptions = [
+    { months: 3, amount: parseFloat((grandTotal / 3).toFixed(2)) },
+    { months: 6, amount: parseFloat((grandTotal / 6).toFixed(2)) },
+    { months: 9, amount: parseFloat((grandTotal / 9).toFixed(2)) },
+    { months: 12, amount: parseFloat((grandTotal / 12).toFixed(2)) },
+    { months: 24, amount: parseFloat((grandTotal / 24 ).toFixed(2)) },
+  ];
+  const orderData = {
+    customerId : customer?._id,
+    items: products.map(product => ({ inventoryId: product?._id })) , 
+    discountPercentage : discountPercentage?.current?.value , 
+  }
+
+  const confirmOrder  =()=>{
+    setNextPage(true);
+  }
+
+
+
+  console.log(orderData)
   function PaymentMethod({ icon, label }) {
     return (
       <button className="flex flex-col items-center justify-center p-4 border rounded-lg hover:border-indigo-500 transition-colors">
@@ -311,7 +354,7 @@ const handleAmountChange = ()=>{
                       <td className="p-4">
                         <img
                           src={product.image}
-                          className="w-12 h-12 rounded-lg object-cover"
+                          className="w-12 h-12 rounded-lg object-contain bg-transparent"
                         />
                       </td>
                       <td className="p-4">{index + 1}</td>
@@ -325,7 +368,7 @@ const handleAmountChange = ()=>{
                           className="p-4 text-red-500"
                           onClick={() => handleDelete(product?._id)}
                         >
-                          ×
+                          <img src={bin} alt="bin"  width={40}/>
                         </button>
                       </td>
                     </tr>
@@ -361,12 +404,12 @@ const handleAmountChange = ()=>{
     </>
   ) : (
     <div className="flex items-center">
-    <p className="mr-4">{customer.name}</p>
+    <p className="mr-10">{` Customer :   ${customer.name}`}</p>
     <button
       className="flex ml-40 text-blue-500 hover:text-blue-700"
       onClick={() => {setOpen(!open)}}
     >
-   <Edit />
+   <img src={edit} alt="" width={30} />
     </button>
   </div>
   )
@@ -423,8 +466,8 @@ const handleAmountChange = ()=>{
                 <div className="text-2xl font-bold">$ {grandTotal}</div>
               </div>
 
-              <button className="w-full mt-5 py-3 font-bold rounded-sm" style={{backgroundColor : "rgba(118, 208, 157, 0.32)" , color : "rgba(24, 147, 77, 1)"}} disabled={confirmDisable} onClick={()=>setNextPage(true)}>
-               {text}
+              <button className="w-full mt-5 py-3 font-bold rounded-sm" style={{backgroundColor : "rgba(118, 208, 157, 0.32)" , color : "rgba(24, 147, 77, 1)"}} disabled={confirmDisable} onClick={confirmOrder}>
+               Next Order
               </button>
             </div>
           </div>
@@ -437,11 +480,14 @@ const handleAmountChange = ()=>{
     
             <div className="flex justify-between items-center mb-8">
               <div>
-                <span className="text-gray-600">Customer: Jennes</span>
+                <span className="text-gray-600">Customer: {customer.name}</span>
               </div>
-              <button className="text-indigo-600 hover:text-indigo-800">
-                <Pencil size={20} />
-              </button>
+              <button
+      className="flex ml-40 text-blue-500 hover:text-blue-700"
+      onClick={() => {setOpen(!open)}}
+    >
+   <img src={edit} alt="" width={30} />
+    </button>
             </div>
     
             <div className="bg-gray-50 rounded-lg p-6 mb-6">
@@ -449,9 +495,6 @@ const handleAmountChange = ()=>{
               <p className="text-3xl font-bold text-center text-gray-800">${grandTotal}</p>
             </div>
 
-            <button className="w-full text-indigo-600 font-medium py-3 rounded-lg mb-6 hover:bg-indigo-200 transition-colors" style={{border : '1px solid #C3C3FD'}}>
-              + Add Layaways
-            </button>
 {/* layway detail section  */}
 
 <div className="border border-gray-200 rounded-lg p-6">
@@ -468,7 +511,7 @@ const handleAmountChange = ()=>{
               </label>
               <input
                 type="text"
-                placeholder="Enter Amount"
+                placeholder="Enter Amount (in $) "
                 value={downPayment}
                 onChange={(e) => setDownPayment(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
@@ -476,11 +519,11 @@ const handleAmountChange = ()=>{
             </div>
             <div className="bg-purple-50 rounded-lg p-4 mb-6">
               <div className="flex justify-between items-center">
-                <span className="text-gray-700">Balance Amount</span>
-                <span className="text-xl font-semibold text-purple-600">$ 45</span>
+                <span className="text-gray-700">Balance Amount : </span>
+                <span className="text-xl font-semibold text-purple-600">{`$ ${grandTotal - downPayment}`}</span>
               </div>
             </div>
-
+{/* 
             <div className="relative">
               <button
                 onClick={() => setLayawayTenure(layawayTenure ? '' : '3 months')}
@@ -491,7 +534,40 @@ const handleAmountChange = ()=>{
                 </span>
                 <ChevronDown className="w-5 h-5 text-gray-400" />
               </button>
-            </div>
+            </div> */}
+   
+             <div className="w-64">
+ 
+             <div className="flex items-center justify-center bg-gray-50">
+      <div className="w-64">
+        <Select value={selectedTenure} onValueChange={setSelectedTenure}>
+          <SelectTrigger className="w-full bg-white">
+            <SelectValue placeholder="Choose Layaways Tenure" />
+          </SelectTrigger>
+          <SelectContent>
+          <SelectGroup>
+  {layawayOptions.map((option) => (
+    <SelectItem 
+      key={option.months} 
+      value={option.months.toString()}
+      className="py-3 px-4 hover:bg-gray-100"
+    >
+      <div className="flex justify-between items-center w-full gap-x-10">
+        <span>{option.months} Months</span>
+        <span className="text-gray-600">$ {option.amount}</span>
+      </div>
+    </SelectItem>
+  ))}
+</SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+      </div>
+    </div>
+    <button className="w-full text-center py-3 mt-10 text-purple-600 rounded-sm mb-4" style={{ background: 'rgba(240, 240, 254, 1)', color: '#5542BA' }}>
+                + CREATE ORDER
+              </button>
+    
           </div>
             <div className="grid grid-cols-3 gap-4 mb-6">
               <PaymentMethod 

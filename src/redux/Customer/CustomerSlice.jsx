@@ -40,6 +40,27 @@ export const updateCustomer = createAsyncThunk(
     }
   );
   
+export const newCustomers = createAsyncThunk(
+    "newCustomer",
+    async ({customerData }, { rejectWithValue }) => {
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/customers`,
+          customerData,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        const customerInfo = response.data;
+        return customerInfo;
+      } catch (err) {
+        return rejectWithValue(`Error updating the customer: ${err.message}`);
+      }
+    }
+  );
+  
 
 
 export const CustomerSlice = createSlice({
@@ -47,7 +68,8 @@ export const CustomerSlice = createSlice({
     initialState : {
     customer : {},
         error : false,
-        pending : false
+        pending : false , 
+        successful : false, 
     },
     reducers : {
         removeCustomer : (state)=>{
@@ -68,6 +90,7 @@ export const CustomerSlice = createSlice({
             state.error = false
             state.pending = false
             state.customer = action.payload
+            state.successful = true
         })
         .addCase(updateCustomer.pending, (state) => {
           state.error = false;
@@ -81,6 +104,20 @@ export const CustomerSlice = createSlice({
         .addCase(updateCustomer.fulfilled, (state, action) => {
           state.error = false;
           state.pending = false;
+          state.customer = action.payload;
+        })
+        .addCase(newCustomers.pending, (state) => {
+          state.error = false;
+          state.pending = true;
+        })
+        .addCase(newCustomers.rejected, (state, action) => {
+          state.error = true;
+          state.pending = false;
+        })
+        .addCase(newCustomers.fulfilled, (state, action) => {
+          state.error = false;
+          state.pending = false;
+          state.successful = true;
           state.customer = action.payload;
         });
     }
