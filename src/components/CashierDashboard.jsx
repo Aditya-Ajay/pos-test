@@ -5,7 +5,7 @@ import logo from "../assets/solis_pos.png"
 import scanner from "../assets/scanner.png"
 import CustomerInformation from './CustomerInformation';
 import { fetchProductById, removeProduct } from '../redux/Product/ProductSlice';
-import { Pencil, CreditCard, Banknote ,  X  , UserPlus , Edit} from 'lucide-react';
+import { Pencil, CreditCard, Banknote ,  X  , UserPlus , Edit , Tag} from 'lucide-react';
 import { fetchCustomerByNumber } from '../redux/Customer/CustomerSlice';
 import {
   Select,
@@ -284,7 +284,7 @@ const handleAmountChange = ()=>{
       {showModal && <CancelModal isOpen={showModal} onClose={()=>setShowModal(false)} onConfirm={()=>setShowModal(false)} />}
 
       {/* Main Content */}
-      <div className="bg-white shadow-sm mt-6 mx-auto pt-2 pb-0.1 pl-2 pr-2 max-w-7xl">
+      {/* <div className="bg-white shadow-sm mt-6 mx-auto pt-2 pb-0.1 pl-2 pr-2 max-w-7xl">
         <div className="flex justify-between items-center mb-6 pl-2 py-2">
         <h1 class="font-weight-800">
   HELLO SMITH
@@ -300,43 +300,43 @@ const handleAmountChange = ()=>{
               </button>
           </div>
         </div>
-      </div>
+      </div> */}
 
-      <main className="max-w-7xl mx-auto px-4">
+      <main className="max-w-7xl mx-auto px-4 mt-10">
         <div className="flex gap-6">
           <div className="flex-1">
-            <div className="flex gap-3 mb-6">
-              <button className="px-4 py-2 border border-[#5542BA] text-[#5542BA] bg-white border-color" >
-                Create Orders
+      
+            <div className="bg-white p-6 rounded-lg shadow-sm h-100vh">
+            <div className="flex gap-4 mb-6">
+              <button className="border border-[#ffffff] text-[#5542BA] bg-white border-color" style={{padding : "10px 24px" , backgroundColor : '#221B67' , color : 'white' , boxShadow : 'none'}} >
+                Sale
               </button>
-              <button className="px-4 py-2 text-[#5542BA]  border-color">
-                Add Returns
+              <button className="px-4 py-2 text-[#5542BA]  border-color" style={{padding : "10px 24px" }} >
+                Return
               </button>
-              <button className="px-4 py-2 text-[#5542BA]  border-color">
-                Repair Order
+              <button className="px-4 py-2 text-[#5542BA]  border-color" style={{padding : "10px 24px" }} >
+                Repair
               </button>
-              <button className="px-4 py-2 text-[#5542BA]  border-color">
-                Custom
+              <button className="px-4 py-2 text-[#5542BA]  border-color" style={{padding : "10px 24px" }} >
+                Custom Order
               </button>
               <div className="flex-1" />
 
             </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-sm h-100vh">
-              <div className="flex items-center gap-4 mb-6 px-2" style={{ backgroundColor: "#f8f8fc" }}>
+              <div className="flex items-center gap-4 mb-6 px-2" style={{ backgroundColor: "#ECF0F3" }}>
                 <div className="p-4 bg-gray-50 rounded-lg">
                   <img src={scanner} alt="Scanner" />
                 </div>
                 <input
                   type="text"
                   onChange={handleChange}
-                  placeholder="Search By Product Code/Name"
+                  placeholder="Search By SKU "
                   className="flex-1 px-4 py-2 border border-gray-200 rounded-lg"
                 />
               </div>
 
               <table className="w-full ">
-                <thead className="bg-gray" style={{ backgroundColor: "#FFF9EB" }}>
+                <thead className="" >
                   <tr>
                     <th className="text-left p-4">Image</th>
                     <th className="text-left p-4">#</th>
@@ -380,8 +380,8 @@ const handleAmountChange = ()=>{
 {!nextPage ?
           <div className="w-100">
             <div className="bg-white px-8 pt-2  shadow-sm pb-8" style={{borderRadius :"4px"}}>
-              <h2 className="text-xl font-semibold mb-2">Order Summary</h2>
-              <p className="text-gray-500 text-sm mb-6">Transaction ID #1982761892</p>
+              <h2 className="text-xl font-semibold mb-2" style={{color :"#2C2384"}}>Order Summary</h2>
+              <p className="text-gray-500 text-sm mb-6" style={{background : "#E8F6F8" , paddingLeft : '1rem' , paddingRight : "1rem" , paddingTop : "0.5rem" , paddingBottom  : "0.5rem" ,  width : "55%"}}>Transaction ID #1982761892</p>
               <div className="relative flex items-center gap-2 mb-6">
               {
   Object.keys(customer).length == 0 ? (
@@ -391,12 +391,12 @@ const handleAmountChange = ()=>{
         placeholder="+91  Add Phone Number"
         onChange={(e) => { setPhoneNumber(e.target.value); }}
         value={phoneNumber}
-        className="flex-1 px-4 py-2 rounded-lg pl-10" // Extra padding for icon space
-        style={{ border: "1px solid rgba(195, 195, 253, 1)" }}
+        className="flex-1 px-4 py-2 rounded-sm pl-10" // Extra padding for icon space
+        style={{ border: "1px solid #BFBCDD" }}
       />
       <button
         className="absolute right-0 p-2 pl-4 pr-4 text-gray-600 transition"
-        style={{ background: 'rgba(195, 195, 253, 1)' }}
+        style={{ background: '#F9FAFB' }}
         onClick={() => setOpen(!open)}
       >
         <UserPlus size={24} style={{ color: "rgba(85, 66, 186, 1)" }} />
@@ -429,7 +429,7 @@ const handleAmountChange = ()=>{
                     type="number"
                     placeholder="0%"
                     disabled={disable}
-                    className="w-20 px-2 py-1 border border-gray-200 rounded"
+                    className="w-20 px-2 py-1 border border-gray-200 rounded-sm"
                     onChange={handleDiscountPercentage}
                     ref={discountPercentage}
             
@@ -439,11 +439,11 @@ const handleAmountChange = ()=>{
                     type="text"
                     placeholder="$ 0.000"
                     disabled={disable}
-                    className="w-24 px-2 py-1 border border-gray-200 rounded"
+                    className="w-24 px-2 py-1 border border-gray-200 rounded-sm"
                     onChange={handleAmountChange}
                     ref={discountAmount}
                   />
-                  <button style={{ color: '#5542BA' }} onClick={DiscountApply}>
+                  <button style={{ color: '#5542BA' , border : "1px solid #2C2384 " , padding : "10px 16px" }} onClick={DiscountApply}>
                     Apply
                   </button>
                 </div>
@@ -457,17 +457,31 @@ const handleAmountChange = ()=>{
                 </div>
               </div>
 
-              <button className="w-full text-center py-3 text-purple-600 rounded-sm mb-4" style={{ background: 'rgba(240, 240, 254, 1)', color: '#5542BA' }}>
-                + Add Exchange
+              <div className="w-full max-w-md flex items-center justify-between gap-2 bg-white rounded-sm p-6 shadow-sm" style={{ backgroundColor: "#FFF6E6" }}>
+  <Tag className="text-gray-400 w-5 h-5" />
+  <div className="flex-grow">
+    Enter Coupon Code
+  </div>
+
+  <button
+    className="px-4 py-1 text-[#FF6B35] hover:bg-orange-50 rounded transition-colors text-sm font-medium"
+  >
+    Apply
+  </button>
+</div>
+
+
+              <button className="w-full text-center py-3 rounded-sm mb-4" style={{color : "#2C2384" , fontWeight : "500" , textDecoration : "underline"}}>
+                 Add Exchange
               </button>
 
-              <div className="text-center mb-4 p-4" style={{ background: 'rgba(240, 240, 254, 0.35)' }}>
-                <div className="text-sm text-gray-500">Amount Payable</div>
+              <div className="text-center mb-4 p-4" style={{ background: '#EAF6EC'  , color : "#24983F"}}>
+                <div className="text-sm text-gray-500">Payable Amount</div>
                 <div className="text-2xl font-bold">$ {grandTotal}</div>
               </div>
 
-              <button className="w-full mt-5 py-3 font-bold rounded-sm" style={{backgroundColor : "rgba(118, 208, 157, 0.32)" , color : "rgba(24, 147, 77, 1)"}} disabled={confirmDisable} onClick={confirmOrder}>
-               Next Order
+              <button className="w-full mt-5 py-3 font-bold rounded-sm " style={{backgroundColor : "#2C2384" , color : "white"}} disabled={confirmDisable} onClick={confirmOrder}>
+              Confirm Order
               </button>
             </div>
           </div>
