@@ -2,7 +2,7 @@ import React, { useState, useEffect  , useRef} from 'react';
 import { Search, Bell, Settings, ChevronDown, Mail, UserCircle2, Scan,User, ArrowBigLeft, ArrowBigRight, Edit2 } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import logo from "../assets/solis_pos.png"
-import scanner from "../assets/scanner.png"
+import scanner from "../assets/scanner-removebg-preview.png"
 import CustomerInformation from './CustomerInformation';
 import { fetchProductById, removeProduct } from '../redux/Product/ProductSlice';
 import { Pencil, CreditCard, Banknote ,  X  , UserPlus , Edit , Tag} from 'lucide-react';
@@ -302,67 +302,69 @@ const handleAmountChange = ()=>{
         </div>
       </div> */}
 
-      <main className="max-w-7xl mx-auto px-4 mt-10">
+      <main className="max-w-8xl mx-auto px-4 mt-10">
         <div className="flex gap-6">
           <div className="flex-1">
       
             <div className="bg-white p-6 rounded-lg shadow-sm h-100vh">
             <div className="flex gap-4 mb-6">
-              <button className="border border-[#ffffff] text-[#5542BA] bg-white border-color" style={{padding : "10px 24px" , backgroundColor : '#221B67' , color : 'white' , boxShadow : 'none'}} >
+              <button className="border border-[#ffffff] text-[#5542BA] bg-white border-color" style={{padding : "10px 24px" , backgroundColor : '#221B67' , color : 'white' , boxShadow : 'none' , minWidth :"15%"}} >
                 Sale
               </button>
-              <button className="px-4 py-2 text-[#5542BA]  border-color" style={{padding : "10px 24px" }} >
+              <button className="px-4 py-2 text-[#5542BA]  border-color" style={{padding : "10px 24px" , minWidth :"15%" }} >
                 Return
               </button>
-              <button className="px-4 py-2 text-[#5542BA]  border-color" style={{padding : "10px 24px" }} >
+              <button className="px-4 py-2 text-[#5542BA]  border-color" style={{padding : "10px 24px" , minWidth :"15%" }} >
                 Repair
               </button>
-              <button className="px-4 py-2 text-[#5542BA]  border-color" style={{padding : "10px 24px" }} >
+              <button className="px-4 py-2 text-[#5542BA]  border-color" style={{padding : "10px 24px" , minWidth :"15%" }} >
                 Custom Order
               </button>
               <div className="flex-1" />
 
             </div>
-              <div className="flex items-center gap-4 mb-6 px-2" style={{ backgroundColor: "#ECF0F3" }}>
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <img src={scanner} alt="Scanner" />
-                </div>
-                <input
-                  type="text"
-                  onChange={handleChange}
-                  placeholder="Search By SKU "
-                  className="flex-1 px-4 py-2 border border-gray-200 rounded-lg"
-                />
-              </div>
+            <div className="flex items-center gap-4 mb-6 px-4 py-6" style={{ backgroundColor: "#ECF0F3" }}>
+  <div className="relative w-90">
+    <input
+      type="text"
+      onChange={handleChange}
+      placeholder="Search By SKU/Name/Barcode Number"
+      className="w-full px-20 py-2 border border-gray-200 rounded-sm placeholder-black"
+    />
+    <div className="absolute left-0 top-1/2 transform -translate-y-1/2">
+      <img src={scanner} alt="Scanner" className="w-10 h-10" />
+    </div>
+  </div>
+</div>
+
 
               <table className="w-full ">
-                <thead className="" >
-                  <tr>
-                    <th className="text-left p-4">Image</th>
-                    <th className="text-left p-4">#</th>
-                    <th className="text-left p-4">Product Code</th>
-                    <th className="text-left p-4">Product Type</th>
-                    <th className="text-left p-4">Price</th>
-                    <th className="text-left p-4">Qty</th>
-                    <th className="text-left p-4">Sub Total</th>
-                    <th className="p-4"></th>
-                  </tr>
-                </thead>
+              <thead>
+  <tr>
+    <th className="text-left p-4 head-color font-normal">#</th>
+    <th className="text-left p-4 head-color font-normal">Image</th>
+    <th className="text-left p-8 head-color mr-4 font-normal">SKU</th> {/* Adds margin-right */}
+    <th className="text-left p-4 head-color font-normal">Product Type</th>
+    <th className="text-left p-4 head-color font-normal">Price</th>
+    <th className="text-left p-4 head-color font-normal">Action</th>                
+    <th className="p-4"></th>
+  </tr>
+</thead>
+
                 <tbody>
                   {products.map((product, index) => (
                     <tr key={product?._id} className="border-t">
+                    
+                      <td className="p-4">{index + 1}</td>
                       <td className="p-4">
                         <img
                           src={product.image}
                           className="w-12 h-12 rounded-lg object-contain bg-transparent"
                         />
                       </td>
-                      <td className="p-4">{index + 1}</td>
                       <td className="p-4">{product?.barcode}</td>
                       <td className="p-4">{product?.name}</td>
-                      <td className="p-4">{product?.finalPrice}</td>
-                      <td className="p-4">{product?.quantity || 1}</td>
-                      <td className="p-4">{product?.finalPrice * (product?.quantity || 1)}</td>
+                      <td className="p-4">{`$ ${product?.finalPrice}`}</td>
                       <td className="p-4">
                         <button
                           className="p-4 text-red-500"
@@ -443,7 +445,7 @@ const handleAmountChange = ()=>{
                     onChange={handleAmountChange}
                     ref={discountAmount}
                   />
-                  <button style={{ color: '#5542BA' , border : "1px solid #2C2384 " , padding : "10px 16px" }} onClick={DiscountApply}>
+                  <button style={{ color: '#5542BA' , border : "1px solid #2C2384 " , padding : "10px 16px" , backgroundColor : "#F9FAFB" }} onClick={DiscountApply}>
                     Apply
                   </button>
                 </div>

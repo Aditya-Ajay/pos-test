@@ -35,8 +35,9 @@ const Header = ({ store, user }) => {
           <button className="text-gray-600 hover:text-primary relative">
             <FaEnvelope />
             <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">7</span>
-          </button>
-          
+         </button>
+
+     
           <div className="flex items-center ml-4 cursor-pointer">
             <img 
               src={user.avatar} 
