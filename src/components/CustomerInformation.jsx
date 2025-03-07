@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { newCustomers, updateCustomer } from '../redux/Customer/CustomerSlice';

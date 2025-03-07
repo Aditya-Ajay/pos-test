@@ -16,7 +16,7 @@ export const handleSignIn = createAsyncThunk(
       if(decodedToken.role=="cashier"){
         window.location.href="/cashier-dashboard";
       }
-      if(decodedToken =="admin"){
+      if(decodedToken.role =="admin"){
         window.location.href="/admin-dashboard"
       }
       

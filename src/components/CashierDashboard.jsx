@@ -220,65 +220,7 @@ const handleAmountChange = ()=>{
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-3">
-        <div className="flex items-center justify-between">
-          {/* Logo and Search */}
-          <div className="flex items-center flex-1 gap-8">
-            {/* Logo */}
-            <div className="flex items-center gap-2 " style={{width : '200px'}}>
-      
-            <img src={logo} alt=""/>
-            </div>
-
-            {/* Search Bar */}
-            <div className="max-w-xl flex-1 relative ml-20">
-  <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" style={{color : '#5542BA'}}/>
-  <input
-    type="text"
-    placeholder="Search"
-    className="pl-10 pr-4 py-2 bg-white-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent shadow-lg"
-    style={{ width: '75%' }}
-  />
-</div>
-
-          </div>
-
-          {/* Right Side */}
-          <div className="flex items-center gap-6">
-            {/* Store Selector */}
-            <div className="flex items-center gap-2 bg-white shadow-lg p-3 rounded-lg">
-  <span className="text-gray-600" style={{ color: "#5542BA" }}>Store:</span>
-  <select className="bg-transparent border-none text-gray-800 font-medium focus:outline-none cursor-pointer">
-    <option>Jewels Galleria</option>
-  </select>
-</div>
-
-
-            {/* Icons */}
-            <div className="flex items-center gap-4">
-              <button className="p-2 hover:bg-gray-100 rounded-lg">
-                <Mail className="w-5 h-5 text-gray-600" style={{color : '#5542BA'}} />
-              </button>
-              <button className="p-2 hover:bg-gray-100 rounded-lg">
-                <Bell className="w-5 h-5 text-gray-600"  style={{color : '#5542BA'}}/>
-              </button>
-              <button className="p-2 hover:bg-gray-100 rounded-lg">
-                <Settings className="w-5 h-5 text-gray-600" style={{color : '#5542BA'}} />
-              </button>
-            </div>
-
-            {/* User Profile */}
-            <div className="flex items-center gap-2 bg-white shadow-md  p-3 rounded-lg">
-              <div className="flex items-center gap-2 cursor-pointer">
-                <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                  <User className="w-5 h-5 text-purple-600" />
-                </div>
-                <span className="font-medium">John Smith</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+     
 
       {open && <CustomerInformation open={open} setOpen={setOpen} />}
       {showModal && <CancelModal isOpen={showModal} onClose={()=>setShowModal(false)} onConfirm={()=>setShowModal(false)} />}
