@@ -6,7 +6,7 @@ import SimpleAreaChart from './SimpleAreaCharts';
 import moneyBagIcon from '../assets/money-bag_svgrepo.com.png'; // Update the path if necessary
 import productIcon from '../assets/product.png'; // Update the path if necessary
 import Sidebar from './Sidebar';
-
+import { useState } from 'react';
 
 function StatCard({ icon: Icon, label, value, subValue, trend }) {
   return (
@@ -79,8 +79,14 @@ function TopCustomers() {
 }
 
 function AdminDashboard() {
+  const [store, setStore] = useState('J Galleria')
+  const [user, setUser] = useState({
+    name: 'John Smith',
+    avatar: 'https://randomuser.me/api/portraits/men/1.jpg'
+  })
+
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex h-screen w-full overflow-hidden">
       <Sidebar />
 
       <div className="flex-1 p-8">
@@ -168,7 +174,7 @@ function AdminDashboard() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default AdminDashboard;
+export default AdminDashboard
