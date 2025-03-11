@@ -47,7 +47,7 @@ const ConvexConcaveOnTopOfSingleBlueSlice = () => {
   };
 
   return (
-    <div style={{ position: 'relative', width: '160px', height: '160px' }}>
+    <div className='items-center ' style={{ position: 'relative', width: '150%', minWidth:'145px', height: '160px', justifyContent:'center' }}>
       {/* Bottom Donut with blue slice */}
       <div
         style={{

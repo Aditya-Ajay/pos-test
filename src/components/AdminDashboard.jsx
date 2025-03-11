@@ -8,11 +8,12 @@ import productIcon from '../assets/product.png'; // Update the path if necessary
 import Sidebar from './Sidebar';
 import { useState } from 'react';
 import upArrowIcon from '../assets/UpArrow.png'
+import profileIcon from '../assets/profile.png';
 
 function StatCard({ icon: Icon, label, value, subValue, trend }) {
   return (
-    <div className="bg-white  rounded-lg w-[100%] h-[119px] p-[12px] ">
-      <div className="flex items-center " style={{justifyContent:'space-between'}}>
+    <div className="bg-white  rounded-lg w-[100%] h-[119px] p-[12px] " style={{ border: '1px solid #EEEEEF' }}>
+      <div className="flex items-center " style={{ justifyContent: 'space-between' }}>
         <div className=" bg-white-50 rounded-lg">
           <h3 className="text-gray-500 text-lg" style={{ color: '#4B4F53', fontSize: '14px', fontWeight: '400' }}>{label}</h3>
         </div>
@@ -62,21 +63,21 @@ function TopCustomers() {
   ];
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-md">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold">Top Customers</h2>
-        <button className="text-indigo-600 text-sm">View All</button>
+    <div className="bg-white w-[100%] h-[100%] py-[3%] px-[5%]">
+      <div className="flex items-center justify-between mb-[5%] h-[13%] " style={{ borderBottom: '1px solid #EEEEEF' }}>
+        <h2 className="text-lg font-semibold" style={{fontSize:'20px', fontWeight:'600', color:'#222526'}}>Top Customers</h2>
+        <button className="text-indigo-600 text-sm" style={{fontSize:'13px', fontWeight:'400', color:'#52575B' , borderBottom: '1px solid #52575B '}}>View All</button>
       </div>
       <div className="space-y-4">
         {customers.map((customer, index) => (
-          <div key={index} className="flex items-center justify-between">
-            <div className="flex items-center">
+          <div key={index} className="flex items-center justify-between" style={{ borderBottom: '1px solid #EEEEEF' }}>
+            <div className="flex items-center" >
               <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center mr-3">
-                <UserCircle className="h-5 w-5 text-indigo-600" />
+            <img src={profileIcon} alt="Profile Icon" className="h-7 w-7" />
               </div>
-              <span className="text-sm">{customer.name}</span>
+              <span className="text-sm" style={{fontSize:'14px', fontWeight:'400', color:'#4B4F53'}}>{customer.name}</span>
             </div>
-            <span className="text-sm font-medium">$ {customer.amount}</span>
+            <span className="text-sm font-medium" style={{fontSize:'14px', fontWeight:'600', color:'#222526'}}>$ {customer.amount}</span>
           </div>
         ))}
       </div>
@@ -95,8 +96,8 @@ function AdminDashboard() {
     <div className="flex bg-gray-50 w-full h-[100rem] overflow-hidden">
       <Sidebar />
 
-      <div className="flex-1 p-8">
-        <div className="flex items-center justify-between mb-8">
+      <div className="flex-1 p-[2.5%] pl-[4%]">
+        <div className="flex items-center justify-between mb-[2.5%]">
           <div>
             <h1 className="text-2xl w-[157px] h-[24px] my-[7px] font-semibold" style={{ fontSize: "20px", fontWeight: '600', color: '#222526' }}>Welcome Admin</h1>
             <p className="text-gray-500  w-[180px] h-[17px]" style={{ fontSize: '14px', fontWeight: '500', color: '#4B4F53' }}>You have <span style={{ color: '#FF6316' }}>20 Orders,</span> Today</p>
@@ -104,74 +105,78 @@ function AdminDashboard() {
 
 
         </div>
-        <div className="w-fill  border-r h-[262px]  flex">
-  {/* Left Section with Stats */}
-  <div className="w-[42%] bg-gray-50  pl-0  grid grid-cols-2 gap-6 ml-0">
-    <StatCard
-      icon={moneyBagIcon}
-      label="Total Revenue"
-      value="$ 85,200"
-      subValue="From last day"
-      trend={10.5}
-    />
-    <StatCard
-      icon={User}
-      label="Total Customers"
-      value="100"
-      subValue="From last day"
-      trend={9.5}
-    />
-    <StatCard
-      icon={productIcon}
-      label="Total Sold Products"
-      value="20"
-      subValue="From last day"
-    />
-    <StatCard
-      icon={productIcon}
-      label="Total Repair Product"
-      value="$ 15,200"
-      subValue="From last day"
-    />
-  </div>
+        <div className="w-[100%]  border-r h-[262px]  flex">
+          {/* Left Section with Stats */}
+          <div className="w-[45%] bg-gray-50  pl-0  grid grid-cols-2 gap-14 ml-0">
+            <StatCard
+              icon={moneyBagIcon}
+              label="Total Revenue"
+              value="$ 85,200"
+              subValue="From last day"
+              trend={10.5}
+            />
+            <StatCard
+              icon={User}
+              label="Total Customers"
+              value="100"
+              subValue="From last day"
+              trend={9.5}
+            />
+            <StatCard
+              icon={productIcon}
+              label="Total Sold Products"
+              value="20"
+              subValue="From last day"
+            />
+            <StatCard
+              icon={productIcon}
+              label="Total Repair Product"
+              value="$ 15,200"
+              subValue="From last day"
+            />
+          </div>
 
-  {/* Right Section with Pie Chart */}
-  <div className="w-[42%] bg-white ml-[24px] h-[260px] rounded-lg shadow-md flex justify-center items-center gap-[64px]">
-      <PieChartWithPaddingAngle />
-  </div>
-</div>
+          {/* Right Section with Pie Chart */}
+          <div className="w-[42%] bg-white ml-[5%] h-[293px] rounded-lg  flex justify-center items-center gap-[64px]" style={{ border: '1px solid #EEEEEF' }}>
+            <PieChartWithPaddingAngle />
+          </div>
+        </div>
 
-
-
-
-        {/* <div className="grid grid-cols-3 h-[55vh] gap-6">
-          <div className="col-span-2 bg-white rounded-xl p-6 shadow-md">
-            <div className="flex items-center justify-between mb-4">
-              <h4 className="text-lg font-semibold mr-6">Revenue Analytics</h4>
-              <div className="flex gap-2">
-                <button className="border border-black-200 text-gray-500 px-5 py-2 rounded-sm text-xl">
-                  Today
-                </button>
-                <button className="border border-black-200 text-gray-500 px-5 py-2 rounded-sm text-xl">
-                  Week
-                </button>
-                <button className="border border-black-200 text-gray-500 px-5 py-2 rounded-sm text-xl">
-                  Month
-                </button>
-                <button className="border border-black-200 text-gray-500 px-5 py-2 rounded-sm text-xl">
-                  Year
-                </button>
+        <div className="w-[100%]  mt-[7%] border-r h-[412px]  flex">
+          <div className="w-[60%] bg-white  h-[100%] rounded-lg  flex justify-center items-center gap-[64px]" style={{ border: '1px solid #EEEEEF' }}>
+            <div className=" w-[100%] h-[100%] gap-[24px] px-[16px] py-[24px]">
+              <div className="flex justify-between">
+                <div>
+                  <h4
+                    className="font-inter font-semibold  "
+                    style={{ width: '100%', fontWeight: '600', height: '24px', fontSize: '20px' }}
+                  >
+                    Revenue Analytics
+                  </h4>        </div>
+                <div className="flex gap-2">
+                  <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm " >
+                    Today</button>
+                  <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm " >
+                    Week</button>
+                  <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm " >
+                    Month</button>
+                  <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm " >
+                    Year</button>
+                </div>
               </div>
-            </div>
-            <div className="h-64 bg-white-50 rounded-lg">
               <SimpleAreaChart />
             </div>
           </div>
-
-          <TopCustomers />
-
+          <div className="w-[27%] bg-white ml-[5%] h-[100%] rounded-lg  flex justify-center items-center gap-[64px]" style={{ border: '1px solid #EEEEEF' }}>
+            <TopCustomers />
+          </div>
         </div>
-        <div className="flex gap-2 mt-4">
+
+
+
+
+
+        {/* <div className="flex gap-2 mt-4">
           <div className="w-1/2">
             <TopSellingProducts />
 

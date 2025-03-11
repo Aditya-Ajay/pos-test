@@ -29,7 +29,7 @@ const PieChartWithOverlap = () => {
         </div>
       </div>
 
-      <div className="flex  mx-[50px] my-[24px] justify-center h-[164px] w-[85%] gap-[64px]">
+      <div className="flex  mx-[5%] my-[40px] ml-[7%] justify-center h-[164px] w-[85%] gap-[64px]">
         <ResponsiveContainer >
           <OverlappingDonutChart/>
         </ResponsiveContainer>
