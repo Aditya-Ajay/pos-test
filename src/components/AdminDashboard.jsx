@@ -13,6 +13,8 @@ import profileIcon from '../assets/profile.png';
 function StatCard({ icon: Icon, label, value, subValue, trend }) {
   return (
     <div className="bg-white  rounded-lg w-[100%] h-[119px] p-[12px] " style={{ border: '1px solid #EEEEEF' }}>
+   
+
       <div className="flex items-center " style={{ justifyContent: 'space-between' }}>
         <div className=" bg-white-50 rounded-lg">
           <h3 className="text-gray-500 text-lg" style={{ color: '#4B4F53', fontSize: '14px', fontWeight: '400' }}>{label}</h3>
@@ -93,10 +95,10 @@ function AdminDashboard() {
   })
 
   return (
-    <div className="flex bg-gray-50 w-full h-[100rem] overflow-hidden">
+    <div className="flex bg-gray-50 w-full h-[105rem] overflow-hidden">
       <Sidebar />
 
-      <div className="flex-1 p-[2.5%] pl-[4%]">
+      <div className="flex-1 p-[2.5%] pl-[6%]">
         <div className="flex items-center justify-between mb-[2.5%]">
           <div>
             <h1 className="text-2xl w-[157px] h-[24px] my-[7px] font-semibold" style={{ fontSize: "20px", fontWeight: '600', color: '#222526' }}>Welcome Admin</h1>
@@ -154,13 +156,13 @@ function AdminDashboard() {
                     Revenue Analytics
                   </h4>        </div>
                 <div className="flex gap-2">
-                  <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm " >
+                  <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm text-[11px] font-[400] text-[#4B4F53] border hover:border-[#5951A7]" >
                     Today</button>
-                  <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm " >
+                  <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm text-[11px] font-[400] text-[#4B4F53] border hover:border-[#5951A7]" >
                     Week</button>
-                  <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm " >
+                  <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm text-[11px] font-[400] text-[#4B4F53] border hover:border-[#5951A7]" >
                     Month</button>
-                  <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm " >
+                  <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm text-[11px] font-[400] text-[#4B4F53] border hover:border-[#5951A7]" >
                     Year</button>
                 </div>
               </div>
@@ -176,15 +178,15 @@ function AdminDashboard() {
 
 
 
-        {/* <div className="flex gap-2 mt-4">
-          <div className="w-1/2">
-            <TopSellingProducts />
+        <div className="w-[100%]  mt-[5%] border-r h-[412px]  flex ">
+        <div className="w-[44%] bg-gray-50  pl-0  grid  gap-14 ml-0">
+        <TopSellingProducts />
 
           </div>
-          <div className="w-1/2">
-            <PendingLayaways />
+          <div className="w-[43%] bg-gray-50  pl-0  grid  gap-14 ml-[5%]">
+          <PendingLayaways />
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   )
