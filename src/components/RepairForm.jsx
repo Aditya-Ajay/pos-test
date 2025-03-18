@@ -1,11 +1,7 @@
 import React from "react";
-import { Button } from "./ui/button";
-import { Card, CardContent } from "./ui/card";
-import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 import { UploadIcon } from "lucide-react";
 
 export const RepairForm = () => {
-  // Define order types for toggle group
   const orderTypes = [
     { value: "sale", label: "Sale" },
     { value: "return", label: "Return" },
@@ -13,7 +9,6 @@ export const RepairForm = () => {
     { value: "custom", label: "Custom Order" },
   ];
 
-  // Define form field groups
   const jewelryDetailFields = [
     { id: "productType", label: "Product Type", type: "select" },
     { id: "materialType", label: "Material Type", type: "select" },
@@ -28,303 +23,100 @@ export const RepairForm = () => {
   ];
 
   return (
-    <Card className="flex-1 shadow-[0px_4px_80px_#9b90900f] overflow-hidden">
-      <CardContent className="p-6 space-y-6 overflow-y-auto h-[896px]">
-        {/* Order type toggle */}
-        <div className="flex items-center">
-          <ToggleGroup type="single" defaultValue="repair" className="flex">
-            {orderTypes.map((type) => (
-              <ToggleGroupItem
-                key={type.value}
-                value={type.value}
-                className={`w-[148px] px-6 py-4 rounded-sm border border-solid ${
-                  type.value === "repair"
-                    ? "bg-foundation-blueblue-600 text-primarybasewhite border-[#221b67] font-inter-16px-semi-bold"
-                    : "bg-white text-foundation-greygrey-900 border-[#eeeeef] font-inter-16px-medium"
-                }`}
-              >
-                {type.label}
-              </ToggleGroupItem>
-            ))}
-          </ToggleGroup>
-        </div>
-
+    <div className="flex-1 overflow-hidden">
+      <div className="p-6 space-y-6 h-[896px]">
         {/* Form content */}
-        <Card className="border border-solid border-[#e3ebee] shadow-[0px_4px_80px_#9b90900f] overflow-y-auto">
-          <CardContent className="p-6 space-y-10">
-            {/* Jewellery Detail Section */}
-            <div className="space-y-8">
-              <h2 className="font-inter-20px-medium text-foundation-greygrey-900">
-                Jewellery&nbsp;&nbsp;Detail
-              </h2>
+        <div className="p-6 space-y-10">
+          {/* Jewellery Detail Section */}
+          <div className="space-y-8">
+            <h2 className="font-inter-20px-medium text-foundation-greygrey-900">Jewellery Detail</h2>
+            <div className="space-y-6">
+              <div className="flex items-start gap-6 w-full">
+                {jewelryDetailFields.map((field) => (
+                  <div key={field.id} className="relative flex-1">
+                    <label className="absolute top-[-10px] left-3 bg-white px-1 text-sm text-gray-600">{field.label}</label>
+                    <select id={field.id} className="w-full border border-solid border-[#c9cbcc] rounded px-4 pt-5 pb-2">
+                      <option value="">Select {field.label}</option>
+                    </select>
+                  </div>
+                ))}
+              </div>
 
-              <div className="space-y-6">
-                {/* First row of fields */}
-                <div className="flex items-start gap-6 w-full">
-                  {jewelryDetailFields.map((field) => (
-                    <div key={field.id} className="flex-1">
-                      <div className="relative border border-solid border-[#c9cbcc] rounded">
-                        <div className="px-4 py-1">
-                          <div className="flex items-center justify-between py-2.5">
-                            <div className="font-inter-14px-regular text-foundation-greygrey-600">
-                              Select
-                            </div>
-                            <img
-                              className="flex-[0_0_auto]"
-                              alt="Frame"
-                              src="public/frame-2169.svg"
-                            />
-                          </div>
-                          <div className="inline-flex items-center px-1 py-0 absolute -top-3 -left-1 bg-white">
-                            <div className="font-inter-11px-regular text-foundation-greygrey-900 whitespace-nowrap">
-                              {field.label}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+              <div className="flex items-start gap-6">
+                <div className="relative flex-1">
+                  <label className="absolute top-[-10px] left-3 bg-white px-1 text-sm text-gray-600">Gross Weight</label>
+                  <input type="number" id="grossWeight" placeholder="Enter gross weight" className="w-full border border-solid border-[#c9cbcc] rounded px-4 pt-5 pb-2" />
                 </div>
 
-                {/* Second row of fields */}
-                <div className="flex items-start gap-6">
-                  {/* Gross Weight Field */}
-                  <div className="flex-1 space-y-0.5">
-                    <div className="relative border border-solid border-[#c9cbcc] rounded bg-white">
-                      <div className="pl-4 pr-0 py-1">
-                        <div className="flex flex-col items-start justify-center py-2.5">
-                          <div className="flex items-center w-full">
-                            <div className="flex-1 font-inter-14px-regular text-foundation-greygrey-600">
-                              Input
-                            </div>
-                          </div>
-                          <div className="inline-flex items-center px-1 py-0 absolute -top-3 -left-1 bg-m-3syslightsurface">
-                            <div className="font-inter-11px-regular text-foundation-greygrey-900 whitespace-nowrap">
-                              Gross Weight
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="h-5 pt-1 pb-0 px-4">
-                      <div className="font-inter-11px-regular text-foundation-greygrey-600">
-                        Supporting text
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Product Image Upload */}
-                  <div className="flex-1 space-y-0.5">
-                    <div className="relative border border-solid border-[#c9cbcc] rounded bg-white h-[45px]">
-                      <div className="px-4 py-1">
-                        <div className="flex flex-col items-start justify-center py-2.5">
-                          <div className="flex items-center justify-between w-full">
-                            <div className="font-inter-14px-regular text-foundation-greygrey-600">
-                              Upload
-                            </div>
-                            <UploadIcon className="w-5 h-5" />
-                          </div>
-                          <div className="inline-flex items-center px-1 py-0 absolute -top-3 -left-1 bg-m-3syslightsurface">
-                            <div className="font-inter-11px-regular text-foundation-greygrey-600 whitespace-nowrap">
-                              Product Image
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="h-5 pt-1 pb-0 px-4">
-                      <div className="font-inter-11px-regular text-foundation-greygrey-600">
-                        Supporting text
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Jewelry Description */}
-                <div className="space-y-0.5 w-full">
-                  <div className="relative border border-solid border-[#c9cbcc] rounded bg-white h-[100px]">
-                    <div className="pl-4 pr-0 py-1 h-[45px]">
-                      <div className="flex flex-col items-start justify-center py-2.5">
-                        <div className="flex items-center w-full">
-                          <div className="flex-1 font-inter-14px-regular text-foundation-greygrey-600">
-                            Input Details
-                          </div>
-                        </div>
-                        <div className="inline-flex items-center px-1 py-0 absolute -top-3 -left-1 bg-m-3syslightsurface">
-                          <div className="font-inter-11px-regular text-foundation-greygrey-900 whitespace-nowrap">
-                            Jewelry Description
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="h-5 pt-1 pb-0 px-4">
-                    <div className="font-inter-11px-regular text-foundation-greygrey-600">
-                      Supporting text
+                <div className="relative flex-1">
+                  <label className="absolute top-[-10px] left-3 bg-white px-1 text-sm text-gray-600">Product Image</label>
+                  <div className="relative border border-solid border-[#c9cbcc] rounded bg-white h-[45px]">
+                    <input type="file" id="productImage" className="w-full opacity-0 absolute top-0 left-0" />
+                    <div className="flex items-center justify-between px-4 py-2.5">
+                      <span className="text-sm text-foundation-greygrey-600">Upload</span>
+                      <UploadIcon className="w-5 h-5" />
                     </div>
                   </div>
                 </div>
               </div>
+
+              <div className="relative w-full">
+                <label className="absolute top-[-10px] left-3 bg-white px-1 text-sm text-gray-600">Jewelry Description</label>
+                <textarea id="jewelryDescription" placeholder="Enter jewelry details" className="w-full border border-solid border-[#c9cbcc] rounded px-4 pt-5 pb-2 h-[100px]"></textarea>
+              </div>
             </div>
+          </div>
 
-            {/* Repair Detail Section */}
-            <div className="space-y-8">
-              <h2 className="font-inter-20px-medium text-[#39322f]">
-                Repair Detail
-              </h2>
+          {/* Repair Detail Section */}
+          <div className="space-y-8">
+            <h2 className="font-inter-20px-medium text-[#39322f]">Repair Detail</h2>
+            <div className="relative w-full">
+              <label className="absolute top-[-10px] left-3 bg-white px-1 text-sm text-gray-600">Repair Instructions</label>
+              <textarea id="repairInstructions" placeholder="Enter repair instructions" className="w-full border border-solid border-[#c9cbcc] rounded px-4 pt-5 pb-2 h-[100px]"></textarea>
+            </div>
+          </div>
 
-              <div className="w-full">
-                <div className="space-y-0.5 w-full">
-                  <div className="relative border border-solid border-[#c9cbcc] rounded bg-white h-[100px]">
-                    <div className="pl-4 pr-0 py-1 h-[45px]">
-                      <div className="flex flex-col items-start justify-center py-2.5">
-                        <div className="flex items-center w-full">
-                          <div className="flex-1 font-inter-14px-regular text-foundation-greygrey-600">
-                            Input
-                          </div>
-                        </div>
-                        <div className="inline-flex items-center px-1 py-0 absolute -top-3 -left-1 bg-m-3syslightsurface">
-                          <div className="font-inter-11px-regular text-foundation-greygrey-900 whitespace-nowrap">
-                            Repair Instructions
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+          {/* Payment Detail Section */}
+          <div className="space-y-8">
+            <h2 className="font-inter-20px-medium text-[#39322f]">Payment Detail</h2>
+            <div className="space-y-6">
+              <div className="flex items-start gap-6 w-full">
+                {paymentDetailFields.slice(0, 3).map((field) => (
+                  <div key={field.id} className="relative flex-1">
+                    <label className="absolute top-[-10px] left-3 bg-white px-1 text-sm text-gray-600">{field.label}</label>
+                    <input type="number" id={field.id} placeholder={`Enter ${field.label}`} className="w-full border border-solid border-[#c9cbcc] rounded px-4 pt-5 pb-2" />
                   </div>
-                  <div className="h-5 pt-1 pb-0 px-4">
-                    <div className="font-inter-11px-regular text-foundation-greygrey-600">
-                      Supporting text
-                    </div>
-                  </div>
+                ))}
+              </div>
+
+              <div className="flex items-start gap-6">
+                <div className="relative flex-1">
+                  <label className="absolute top-[-10px] left-3 bg-white px-1 text-sm text-gray-600">Advance Payment (if any)</label>
+                  <input type="number" id="advancePayment" placeholder="Enter advance payment" className="w-full border border-solid border-[#c9cbcc] rounded px-4 pt-5 pb-2" />
+                </div>
+
+                <div className="relative flex-1">
+                  <label className="absolute top-[-10px] left-3 bg-white px-1 text-sm text-gray-600">Date of Submission</label>
+                  <input type="date" id="dateOfSubmission" className="w-full border border-solid border-[#c9cbcc] rounded px-4 pt-5 pb-2" />
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Payment Detail Section */}
-            <div className="space-y-8">
-              <h2 className="font-inter-20px-medium text-[#39322f]">
-                Payment Detail
-              </h2>
-
-              <div className="space-y-6">
-                {/* First row of payment fields */}
-                <div className="flex items-start gap-6 w-full">
-                  {paymentDetailFields.slice(0, 3).map((field) => (
-                    <div key={field.id} className="flex-1 space-y-0.5">
-                      <div className="relative border border-solid border-[#c9cbcc] rounded bg-white">
-                        <div className="pl-4 pr-0 py-1">
-                          <div className="flex flex-col items-start justify-center py-2.5">
-                            <div className="flex items-center w-full">
-                              <div className="flex-1 font-inter-14px-regular text-foundation-greygrey-600">
-                                Input
-                              </div>
-                            </div>
-                            <div className="inline-flex items-center px-1 py-0 absolute -top-3 -left-1 bg-m-3syslightsurface">
-                              <div className="font-inter-11px-regular text-foundation-greygrey-900 whitespace-nowrap">
-                                {field.label}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="h-5 pt-1 pb-0 px-4">
-                        <div className="font-inter-11px-regular text-foundation-greygrey-600">
-                          Supporting text
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Second row of payment fields */}
-                <div className="flex items-start gap-6">
-                  {/* Advance Payment */}
-                  <div className="flex-1 space-y-0.5">
-                    <div className="relative border border-solid border-[#c9cbcc] rounded bg-white">
-                      <div className="pl-4 pr-0 py-1">
-                        <div className="flex flex-col items-start justify-center py-2.5">
-                          <div className="flex items-center w-full">
-                            <div className="flex-1 font-inter-14px-regular text-foundation-greygrey-600">
-                              Input
-                            </div>
-                          </div>
-                          <div className="inline-flex items-center px-1 py-0 absolute -top-3 -left-1 bg-m-3syslightsurface">
-                            <div className="font-inter-11px-regular text-foundation-greygrey-900 whitespace-nowrap">
-                              Advance if any
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="h-5 pt-1 pb-0 px-4">
-                      <div className="font-inter-11px-regular text-foundation-greygrey-600">
-                        Supporting text
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Date of Submission */}
-                  <div className="flex-1 space-y-0.5">
-                    <div className="relative border border-solid border-[#c9cbcc] rounded bg-white h-[45px]">
-                      <div className="px-4 py-1">
-                        <div className="flex flex-col items-start justify-center py-2.5">
-                          <div className="flex items-center justify-between w-full">
-                            <div className="font-inter-14px-regular text-foundation-greygrey-600">
-                              DD/MM/YYYY
-                            </div>
-                            <UploadIcon className="w-5 h-5" />
-                          </div>
-                          <div className="inline-flex items-center px-1 py-0 absolute -top-3 -left-1 bg-m-3syslightsurface">
-                            <div className="font-inter-11px-regular text-foundation-greygrey-600 whitespace-nowrap">
-                              Date of Submission
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="h-5 pt-1 pb-0 px-4">
-                      <div className="font-inter-11px-regular text-foundation-greygrey-600">
-                        Supporting text
-                      </div>
-                    </div>
-                  </div>
-                </div>
+          {/* Accumulated Repair Amount Section */}
+          <div className="space-y-8">
+            <h2 className="font-inter-20px-medium text-black">Accumulated Repair Amount</h2>
+            <div className="flex items-center justify-between">
+              <div className="relative flex-1 max-w-[266.67px]">
+                <label className="absolute top-[-10px] left-3 bg-white px-1 text-sm text-gray-600">Amount</label>
+                <input type="number" id="accumulatedAmount" placeholder="Enter accumulated amount" className="w-full border border-solid border-[#c9cbcc] rounded px-4 pt-5 pb-2" />
               </div>
-            </div>
 
-            {/* Accumulated Repair Amount Section */}
-            <div className="space-y-8">
-              <h2 className="font-inter-20px-medium text-black">
-                Accumulated Repair Amount
-              </h2>
-
-              <div className="flex items-center justify-between">
-                <div className="flex-1 space-y-0.5 max-w-[266.67px]">
-                  <div className="relative border border-solid border-[#c9cbcc] rounded bg-white">
-                    <div className="pl-4 pr-0 py-1">
-                      <div className="flex flex-col items-start justify-center py-2.5">
-                        <div className="flex items-center w-full">
-                          <div className="flex-1 font-inter-14px-regular text-foundation-greygrey-600">
-                            Input
-                          </div>
-                        </div>
-                        <div className="inline-flex items-center px-1 py-0 absolute -top-3 -left-1 bg-m-3syslightsurface">
-                          <div className="font-inter-11px-regular text-foundation-greygrey-900 whitespace-nowrap">
-                            Auto Calculated Amount
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <Button className="w-48 bg-foundation-blueblue-600 text-primarybasewhite border border-[#221b67] rounded-sm font-inter-16px-semi-bold">
-                  Submit
-                </Button>
-              </div>
+              <button className="bg-[#3252ff] text-white py-3 px-6 rounded-md mt-6 w-[126px]">Submit</button>
             </div>
-          </CardContent>
-        </Card>
-      </CardContent>
-    </Card>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };

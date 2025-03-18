@@ -45,7 +45,7 @@ const products = [
         <button className="text-indigo-600 text-sm" style={{fontSize:'13px', fontWeight:'400', color:'#52575B' , borderBottom: '1px solid #52575B '}}>View All</button>
       </div>
       <div className="flex items-center justify-between mb-4">
-      <div className="flex gap-2">
+      <div className="flex gap-7">
                   <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm text-[11px] font-[400] text-[#4B4F53] border hover:border-[#5951A7]" >
                     Today</button>
                   <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm text-[11px] font-[400] text-[#4B4F53] border hover:border-[#5951A7]" >
