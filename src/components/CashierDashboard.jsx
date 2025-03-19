@@ -24,6 +24,7 @@ import bin from "../assets/bin.png"
 import edit from "../assets/edit.png"
 import Setting from "../assets/Setting.png"
 import { createOrder } from '../redux/Order/OrderSlice';
+import { RepairForm } from './RepairForm';
 
 function PaymentOption({ icon, label, bgColor }) {
   return (
@@ -55,7 +56,12 @@ function App() {
   const dispatch = useDispatch();
 
 
- 
+  const [selectedTab, setSelectedTab] = useState('sale'); // Default to 'sale' tab
+  // Tab change handler
+  const handleTabChange = (tab) => {
+    setSelectedTab(tab);
+  };
+
 
   
   console.log(customer)
@@ -266,75 +272,73 @@ const handleAmountChange = ()=>{
       
             <div className="bg-white p-6 rounded-lg shadow-sm h-100vh">
             <div className="flex gap-4 mb-6">
-              <button className="border border-[#ffffff] text-[#5542BA] bg-white border-color" style={{padding : "10px 24px" , backgroundColor : '#221B67' , color : 'white' , boxShadow : 'none' , minWidth :"15%"}} >
-                Sale
-              </button>
-              <button className="px-4 py-2 text-[#5542BA]  border-color" style={{padding : "10px 24px" , minWidth :"15%" }} >
-                Return
-              </button>
-              <button className="px-4 py-2 text-[#5542BA]  border-color" style={{padding : "10px 24px" , minWidth :"15%" }} >
-                Repair
-              </button>
-              <button className="px-4 py-2 text-[#5542BA]  border-color" style={{padding : "10px 24px" , minWidth :"15%" }} >
-                Custom Order
-              </button>
+            <button onClick={() => handleTabChange('sale')} className="border border-[#ffffff] text-[#5542BA] border-color" style={{ padding: '10px 24px', boxShadow: 'none', minWidth: '15%', backgroundColor: selectedTab === 'sale' ? '#221B67' : 'white', color: selectedTab === 'sale' ? 'white' : '#5542BA' }}>Sale</button>
+      <button onClick={() => handleTabChange('return')} className="border border-[#ffffff] text-[#5542BA] border-color" style={{ padding: '10px 24px', boxShadow: 'none', minWidth: '15%', backgroundColor: selectedTab === 'return' ? '#221B67' : 'white', color: selectedTab === 'return' ? 'white' : '#5542BA' }}>Return</button>
+      <button onClick={() => handleTabChange('repair')} className="border border-[#ffffff] text-[#5542BA] border-color" style={{ padding: '10px 24px', boxShadow: 'none', minWidth: '15%', backgroundColor: selectedTab === 'repair' ? '#221B67' : 'white', color: selectedTab === 'repair' ? 'white' : '#5542BA' }}>Repair</button>
+      <button onClick={() => handleTabChange('customOrder')} className="border border-[#ffffff] text-[#5542BA] border-color" style={{ padding: '10px 24px', boxShadow: 'none', minWidth: '15%', backgroundColor: selectedTab === 'customOrder' ? '#221B67' : 'white', color: selectedTab === 'customOrder' ? 'white' : '#5542BA' }}>Custom Order</button>
               <div className="flex-1" />
 
             </div>
-            <div className="flex items-center gap-4 mb-6 px-4 py-6" style={{ backgroundColor: "#ECF0F3" }}>
-  <div className="relative w-90">
-    <input
-      type="text"
-      onChange={handleChange}
-      placeholder="Search By SKU/Name/Barcode Number"
-      className="w-full px-20 py-2 border border-gray-200 rounded-sm placeholder-black"
-    />
-    <div className="absolute left-0 top-1/2 transform -translate-y-1/2">
-      <img src={scanner} alt="Scanner" className="w-10 h-10" />
-    </div>
-  </div>
-</div>
+            {selectedTab === 'sale' &&(
+               <div className="flex items-center gap-4 mb-6 px-4 py-6" style={{ backgroundColor: "#ECF0F3" }}>
+               <div className="relative w-90">
+                 <input
+                   type="text"
+                   onChange={handleChange}
+                   placeholder="Search By SKU/Name/Barcode Number"
+                   className="w-full px-20 py-2 border border-gray-200 rounded-sm placeholder-black"
+                 />
+                 <div className="absolute left-0 top-1/2 transform -translate-y-1/2">
+                   <img src={scanner} alt="Scanner" className="w-10 h-10" />
+                 </div>
+               </div>
+             </div>)} 
+             
+             
+                           {selectedTab === 'sale' &&(<table className="w-full ">
+                           <thead>
+               <tr>
+                 <th className="text-left p-4 head-color font-normal">#</th>
+                 <th className="text-left p-4 head-color font-normal">Image</th>
+                 <th className="text-left p-8 head-color mr-4 font-normal">SKU</th> {/* Adds margin-right */}
+                 <th className="text-left p-4 head-color font-normal">Product Type</th>
+                 <th className="text-left p-4 head-color font-normal">Price</th>
+                 <th className="text-left p-4 head-color font-normal">Action</th>                
+                 <th className="p-4"></th>
+               </tr>
+             </thead>
+             
+                             <tbody>
+                               {products.map((product, index) => (
+                                 <tr key={product?._id} className="border-t">
+                                 
+                                   <td className="p-4">{index + 1}</td>
+                                   <td className="p-4">
+                                     <img
+                                       src={product.image}
+                                       className="w-12 h-12 rounded-lg object-contain bg-transparent"
+                                     />
+                                   </td>
+                                   <td className="p-4">{product?.barcode}</td>
+                                   <td className="p-4">{product?.name}</td>
+                                   <td className="p-4">{`$ ${product?.finalPrice}`}</td>
+                                   <td className="p-4">
+                                     <button
+                                       className="p-4 text-red-500"
+                                       onClick={() => handleDelete(product?._id)}
+                                     >
+                                       <img src={bin} alt="bin"  width={40}/>
+                                     </button>
+                                   </td>
+                                 </tr>
+                               ))}
+                             </tbody>
+                           </table>)}
+           
+            {selectedTab === 'repair' && (
+                <RepairForm />
 
-
-              <table className="w-full ">
-              <thead>
-  <tr>
-    <th className="text-left p-4 head-color font-normal">#</th>
-    <th className="text-left p-4 head-color font-normal">Image</th>
-    <th className="text-left p-8 head-color mr-4 font-normal">SKU</th> {/* Adds margin-right */}
-    <th className="text-left p-4 head-color font-normal">Product Type</th>
-    <th className="text-left p-4 head-color font-normal">Price</th>
-    <th className="text-left p-4 head-color font-normal">Action</th>                
-    <th className="p-4"></th>
-  </tr>
-</thead>
-
-                <tbody>
-                  {products.map((product, index) => (
-                    <tr key={product?._id} className="border-t">
-                    
-                      <td className="p-4">{index + 1}</td>
-                      <td className="p-4">
-                        <img
-                          src={product.image}
-                          className="w-12 h-12 rounded-lg object-contain bg-transparent"
-                        />
-                      </td>
-                      <td className="p-4">{product?.barcode}</td>
-                      <td className="p-4">{product?.name}</td>
-                      <td className="p-4">{`$ ${product?.finalPrice}`}</td>
-                      <td className="p-4">
-                        <button
-                          className="p-4 text-red-500"
-                          onClick={() => handleDelete(product?._id)}
-                        >
-                          <img src={bin} alt="bin"  width={40}/>
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            )}
             </div>
           </div>
 {nextPage ?

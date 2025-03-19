@@ -9,10 +9,15 @@ import Sidebar from './Sidebar';
 import { useState } from 'react';
 import upArrowIcon from '../assets/UpArrow.png'
 import profileIcon from '../assets/profile.png';
-
+import profitIcon from '../assets/profit.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchTopCustomers } from '../redux/Customer/CustomerSlice'
 function StatCard({ icon: Icon, label, value, subValue, trend }) {
   return (
     <div className="bg-white  rounded-lg w-[100%] h-[119px] p-[12px] " style={{ border: '1px solid #EEEEEF' }}>
+   
+
       <div className="flex items-center " style={{ justifyContent: 'space-between' }}>
         <div className=" bg-white-50 rounded-lg">
           <h3 className="text-gray-500 text-lg" style={{ color: '#4B4F53', fontSize: '14px', fontWeight: '400' }}>{label}</h3>
@@ -22,7 +27,7 @@ function StatCard({ icon: Icon, label, value, subValue, trend }) {
           {typeof Icon === 'string' ? (
             <img src={Icon} alt={`${label} Icon`} className="h-8 w-8" />
           ) : (
-            <Icon className="h-[32px] w-[32px] p-[6px] bg-grey-800 text-indigo-600" style={{ background: '#EEEEEF', border: '1px solid #ECF0F3', borderRadius: '4px' }} />
+            <Icon className="h-[32px] w-[32px] p-[6px] bg-grey-800 text-indigo-600" style={{background: '#EEEEEF', border: '1px solid #ECF0F3', borderRadius: '4px' }} />
           )}
         </div>
       </div>
@@ -52,32 +57,39 @@ function StatCard({ icon: Icon, label, value, subValue, trend }) {
 }
 
 function TopCustomers() {
-  const customers = [
-    { name: 'Manoj Kumar', amount: '5,299' },
-    { name: 'Satish Singh', amount: '4,999' },
-    { name: 'Kamla David', amount: '4,678' },
-    { name: 'Rajkumari Dev', amount: '4,198' },
-    { name: 'Anna Winston', amount: '4,000' },
-    { name: 'Trilok Kumar', amount: '3,881' },
-    { name: 'Akira Bhuvan', amount: '3,672' },
-  ];
+  const dispatch = useDispatch();
+  const { topCustomers, loading, error } = useSelector((state) => state.customer);
+
+  useEffect(() => {
+    dispatch(fetchTopCustomers()); // Dispatch the async thunk to fetch data
+  }, []);
+console.log(topCustomers,'customer')
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="bg-white w-[100%] h-[100%] py-[3%] px-[5%]">
-      <div className="flex items-center justify-between mb-[5%] h-[13%] " style={{ borderBottom: '1px solid #EEEEEF' }}>
-        <h2 className="text-lg font-semibold" style={{fontSize:'20px', fontWeight:'600', color:'#222526'}}>Top Customers</h2>
-        <button className="text-indigo-600 text-sm" style={{fontSize:'13px', fontWeight:'400', color:'#52575B' , borderBottom: '1px solid #52575B '}}>View All</button>
+      <div className="flex items-center justify-between mb-[5%] h-[13%]" style={{ borderBottom: '1px solid #EEEEEF' }}>
+        <h2 className="text-lg font-semibold" style={{ fontSize: '20px', fontWeight: '600', color: '#222526' }}>Top Customers</h2>
+        <button className="text-indigo-600 text-sm" style={{ fontSize: '13px', fontWeight: '400', color: '#52575B', borderBottom: '1px solid #52575B ' }}>
+          View All
+        </button>
       </div>
       <div className="space-y-4">
-        {customers.map((customer, index) => (
+        {topCustomers && topCustomers.map((customer, index) => (
           <div key={index} className="flex items-center justify-between" style={{ borderBottom: '1px solid #EEEEEF' }}>
-            <div className="flex items-center" >
+            <div className="flex items-center">
               <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center mr-3">
-            <img src={profileIcon} alt="Profile Icon" className="h-7 w-7" />
+                <img src={profileIcon} alt="Profile Icon" className="h-7 w-7" />
               </div>
-              <span className="text-sm" style={{fontSize:'14px', fontWeight:'400', color:'#4B4F53'}}>{customer.name}</span>
+              <span className="text-sm" style={{ fontSize: '14px', fontWeight: '400', color: '#4B4F53' }}>{customer.name}</span>
             </div>
-            <span className="text-sm font-medium" style={{fontSize:'14px', fontWeight:'600', color:'#222526'}}>$ {customer.amount}</span>
+            <span className="text-sm font-medium" style={{ fontSize: '14px', fontWeight: '600', color: '#222526' }}>${customer.amount}</span>
           </div>
         ))}
       </div>
@@ -93,11 +105,11 @@ function AdminDashboard() {
   })
 
   return (
-    <div className="flex bg-gray-50 w-full h-[100rem] overflow-hidden">
+    <div className="flex bg-gray-50 w-full h-[105rem] overflow-hidden">
       <Sidebar />
 
-      <div className="flex-1 p-[2.5%] pl-[4%]">
-        <div className="flex items-center justify-between mb-[2.5%]">
+      <div className="flex-1 p-[2%] pl-[3%]">
+        <div className="flex items-center justify-between mb-[3%]">
           <div>
             <h1 className="text-2xl w-[157px] h-[24px] my-[7px] font-semibold" style={{ fontSize: "20px", fontWeight: '600', color: '#222526' }}>Welcome Admin</h1>
             <p className="text-gray-500  w-[180px] h-[17px]" style={{ fontSize: '14px', fontWeight: '500', color: '#4B4F53' }}>You have <span style={{ color: '#FF6316' }}>20 Orders,</span> Today</p>
@@ -107,10 +119,10 @@ function AdminDashboard() {
         </div>
         <div className="w-[100%]  border-r h-[262px]  flex">
           {/* Left Section with Stats */}
-          <div className="w-[45%] bg-gray-50  pl-0  grid grid-cols-2 gap-14 ml-0">
+          <div className="w-[46%] bg-gray-50  pl-0  grid grid-cols-2 gap-14 ml-0">
             <StatCard
               icon={moneyBagIcon}
-              label="Total Revenue"
+              label="Profit"
               value="$ 85,200"
               subValue="From last day"
               trend={10.5}
@@ -131,19 +143,33 @@ function AdminDashboard() {
             <StatCard
               icon={productIcon}
               label="Total Repair Product"
-              value="$ 15,200"
+              value=" 200"
               subValue="From last day"
             />
           </div>
 
           {/* Right Section with Pie Chart */}
-          <div className="w-[42%] bg-white ml-[5%] h-[293px] rounded-lg  flex justify-center items-center gap-[64px]" style={{ border: '1px solid #EEEEEF' }}>
+          <div className="w-[45%] bg-white ml-[5%] h-[293px] rounded-lg  flex justify-center items-center gap-[64px]" style={{ border: '1px solid #EEEEEF' }}>
             <PieChartWithPaddingAngle />
           </div>
         </div>
 
-        <div className="w-[100%]  mt-[7%] border-r h-[412px]  flex">
-          <div className="w-[60%] bg-white  h-[100%] rounded-lg  flex justify-center items-center gap-[64px]" style={{ border: '1px solid #EEEEEF' }}>
+        <div className="w-[100%]  my-[6%] border-r h-[412px]  flex">
+        <div className="w-[46%] bg-gray-50  pl-0  grid  gap-14 ml-0">
+        <TopSellingProducts />
+
+          </div>
+          <div className="w-[45%] bg-gray-50  pl-0  grid  gap-14 ml-[5%]">
+          <PendingLayaways />
+          </div>
+        </div>
+
+
+
+
+
+        <div className="w-[100%]   my-[15%] border-r h-[412px]  flex ">
+        <div className="w-[62%] bg-white  h-[100%] rounded-lg  flex justify-center items-center gap-[64px]" style={{ border: '1px solid #EEEEEF' }}>
             <div className=" w-[100%] h-[100%] gap-[24px] px-[16px] py-[24px]">
               <div className="flex justify-between">
                 <div>
@@ -153,38 +179,24 @@ function AdminDashboard() {
                   >
                     Revenue Analytics
                   </h4>        </div>
-                <div className="flex gap-2">
-                  <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm " >
+                <div className="flex gap-7">
+                  <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm text-[11px] font-[400] text-[#4B4F53] border hover:border-[#5951A7]" >
                     Today</button>
-                  <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm " >
+                  <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm text-[11px] font-[400] text-[#4B4F53] border hover:border-[#5951A7]" >
                     Week</button>
-                  <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm " >
+                  <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm text-[11px] font-[400] text-[#4B4F53] border hover:border-[#5951A7]" >
                     Month</button>
-                  <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm " >
+                  <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm text-[11px] font-[400] text-[#4B4F53] border hover:border-[#5951A7]" >
                     Year</button>
                 </div>
               </div>
               <SimpleAreaChart />
             </div>
           </div>
-          <div className="w-[27%] bg-white ml-[5%] h-[100%] rounded-lg  flex justify-center items-center gap-[64px]" style={{ border: '1px solid #EEEEEF' }}>
+          <div className="w-[29%] bg-white ml-[5%] h-[100%] rounded-lg  flex justify-center items-center gap-[64px]" style={{ border: '1px solid #EEEEEF' }}>
             <TopCustomers />
-          </div>
+          </div> 
         </div>
-
-
-
-
-
-        {/* <div className="flex gap-2 mt-4">
-          <div className="w-1/2">
-            <TopSellingProducts />
-
-          </div>
-          <div className="w-1/2">
-            <PendingLayaways />
-          </div>
-        </div> */}
       </div>
     </div>
   )

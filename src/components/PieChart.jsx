@@ -2,8 +2,8 @@ import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import upArrowIcon from '../assets/UpArrow.png'
 import OverlappingDonutChart from './CurvedDonutChart';
 const data = [
-  { name: "First Time", value: 400, color: "#302691" },
-  { name: "Repeat", value: 300, color: "#FF6313" }
+  { name: "New Customer", value: 400, color: "#302691" },
+  { name: "Repeat Customer", value: 300, color: "#FF6313" }
 ];
 
 const PieChartWithOverlap = () => {
@@ -17,14 +17,14 @@ const PieChartWithOverlap = () => {
           >
             Customer Analytics
           </h4>        </div>
-        <div className="flex gap-2">
-          <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm " >
+        <div className="flex gap-7">
+          <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm text-[11px] font-[400] text-[#4B4F53] border hover:border-[#5951A7] " >
            Today</button>
-           <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm " >
+           <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm text-[11px] font-[400] text-[#4B4F53] border hover:border-[#5951A7] " >
            Week</button>
-           <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm " >
+           <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm text-[11px] font-[400] text-[#4B4F53] border hover:border-[#5951A7]" >
            Month</button>
-           <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm " >
+           <button className="border h-[25px] w-[58px] border-black-200 text-gray-500  rounded-sm text-[11px] font-[400] text-[#4B4F53] border hover:border-[#5951A7] " >
            Year</button>
         </div>
       </div>
@@ -33,11 +33,11 @@ const PieChartWithOverlap = () => {
         <ResponsiveContainer >
           <OverlappingDonutChart/>
         </ResponsiveContainer>
-        <div className="flex justify-around items-start pt-[18px]">
+        <div className="flex justify-around items-start pt-[18px]  gap-14">
           {data.map((entry, index) => (
             <div key={index} className="flex flex-col items-center gap-5 ">
-              <div className="w-[46px] h-[31px] font-semibold" style={{ textAlign: 'center' }}>{entry.value}</div>
-              <div className="w-[94px] h-[24px]" style={{ color: entry.color, textAlign: 'center' }}>
+              <div className="w-[46px] h-[31px] font-semibold" style={{ textAlign: 'center',fontSize: '24px' }}>{entry.value}</div>
+              <div className="w-[94px] h-[24px]" style={{ color: entry.color, textAlign: 'center',fontSize: '18px ',marginBottom:'14px' }}>
               {entry.name}
               </div>
                <div className="flex items-center gap-[4px] w-[65px]  l-[22px] p-[2px] rounded-sm" style={{ color: '#E8F6F8' ,justifyContent:'center'}}>
