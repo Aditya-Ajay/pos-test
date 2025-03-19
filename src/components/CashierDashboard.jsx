@@ -341,7 +341,7 @@ const handleAmountChange = ()=>{
             )}
             </div>
           </div>
-{nextPage ?
+{!nextPage ?
           <div className="w-100">
             <div className="bg-white px-8 pt-2  shadow-sm pb-8" style={{borderRadius :"4px"}}>
               <h2 className="text-xl font-semibold mb-2" style={{color :"#2C2384"}}>Order Summary</h2>
