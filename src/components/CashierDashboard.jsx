@@ -7,6 +7,10 @@ import CustomerInformation from './CustomerInformation';
 import { fetchProductById, removeProduct } from '../redux/Product/ProductSlice';
 import { Pencil, CreditCard, Banknote ,  X  , UserPlus , Edit , Tag} from 'lucide-react';
 import { fetchCustomerByNumber } from '../redux/Customer/CustomerSlice';
+import venmo from "../assets/venmo.png"
+import zelle from "../assets/zelle.png"
+import cash from "../assets/cash.png"
+import card from "../assets/card.png"
 import {
   Select,
   SelectContent,
@@ -21,6 +25,16 @@ import edit from "../assets/edit.png"
 import Setting from "../assets/Setting.png"
 import { createOrder } from '../redux/Order/OrderSlice';
 import { RepairForm } from './RepairForm';
+
+function PaymentOption({ icon, label, bgColor }) {
+  return (
+    <button className={`${bgColor} rounded-lg p-4 flex items-center gap-3 w-full transition hover:opacity-90`}>
+      {icon}
+      <span className="font-medium">{label}</span>
+    </button>
+  );
+}
+
 
 function App() {
   const products = useSelector((state) => state?.product?.products);
@@ -38,6 +52,7 @@ function App() {
   const [finalNumber , setFinalNumber] = useState(null)
   const [downPayment , setDownPayment] = useState('')
   const [layawayTenure , setLayawayTenure] = useState('')
+  const [layawayStatus , setLayawayStatus] = useState(false)
   const dispatch = useDispatch();
 
 
@@ -52,8 +67,9 @@ function App() {
   console.log(customer)
 
 
-
-
+  const handleCancel = ()=>{
+    window.location.reload()
+  }
 
   function CancelModal({ isOpen, onClose, onConfirm }) {
     if (!isOpen) return null;
@@ -115,11 +131,11 @@ function App() {
   const discountPercentage  = useRef(null);
   const discountAmount = useRef(null);
   const layawayOptions = [
-    { months: 3, amount: parseFloat((grandTotal / 3).toFixed(2)) },
-    { months: 6, amount: parseFloat((grandTotal / 6).toFixed(2)) },
-    { months: 9, amount: parseFloat((grandTotal / 9).toFixed(2)) },
-    { months: 12, amount: parseFloat((grandTotal / 12).toFixed(2)) },
-    { months: 24, amount: parseFloat((grandTotal / 24 ).toFixed(2)) },
+    { months: 3, amount: parseFloat((grandTotal - downPayment / 3).toFixed(2)) },
+    { months: 6, amount: parseFloat((grandTotal - downPayment/ 6).toFixed(2)) },
+    { months: 9, amount: parseFloat((grandTotal - downPayment / 9).toFixed(2)) },
+    { months: 12, amount: parseFloat((grandTotal - downPayment/ 12).toFixed(2)) },
+    { months: 24, amount: parseFloat((grandTotal - downPayment/ 24 ).toFixed(2)) },
   ];
   const orderData = {
     customerId : customer?._id,
@@ -329,7 +345,7 @@ const handleAmountChange = ()=>{
           <div className="w-100">
             <div className="bg-white px-8 pt-2  shadow-sm pb-8" style={{borderRadius :"4px"}}>
               <h2 className="text-xl font-semibold mb-2" style={{color :"#2C2384"}}>Order Summary</h2>
-              <p className="text-gray-500 text-sm mb-6" style={{background : "#E8F6F8" , paddingLeft : '1rem' , paddingRight : "1rem" , paddingTop : "0.5rem" , paddingBottom  : "0.5rem" ,  width : "55%"}}>Transaction ID #1982761892</p>
+              <p className="text-gray-500 text-sm mb-6" style={{background : "#E8F6F8" , paddingLeft : '1rem' , paddingRight : "1rem" , paddingTop : "0.5rem" , paddingBottom  : "0.5rem" ,  width : "65%"}}>Transaction ID #1982761892</p>
               <div className="relative flex items-center gap-2 mb-6">
               {
   Object.keys(customer).length == 0 ? (
@@ -433,136 +449,140 @@ const handleAmountChange = ()=>{
               </button>
             </div>
           </div>
-          : <div className=" px-8 pt-2 rounded-lg  pb-8">
-          <div className=" rounded-lg shadow-lg p-6 w-full max-w-md">
-            <div className="mb-6">
-              <h1 className="text-2xl font-semibold text-gray-800">Payment Summary</h1>
-              <p className="text-sm text-gray-500">Transaction ID #1982761892</p>
-            </div>
-    
-            <div className="flex justify-between items-center mb-8">
-              <div>
-                <span className="text-gray-600">Customer: {customer.name}</span>
-              </div>
-              <button
-      className="flex ml-40 text-blue-500 hover:text-blue-700"
-      onClick={() => {setOpen(!open)}}
-    >
-   <img src={edit} alt="" width={30} />
-    </button>
-            </div>
-    
-            <div className="bg-gray-50 rounded-lg p-6 mb-6">
-              <p className="text-sm text-gray-600 text-center mb-2">Amount Payable</p>
-              <p className="text-3xl font-bold text-center text-gray-800">${grandTotal}</p>
-            </div>
-
-{/* layway detail section  */}
-
-<div className="border border-gray-200 rounded-lg p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-semibold text-gray-900">Layaways Details</h2>
-              <button className="text-gray-400 hover:text-gray-600">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="mb-6">
-              <label className="flex items-center gap-2 mb-4">
-                <span className="text-gray-700">Add down payment amount</span>
-              </label>
-              <input
-                type="text"
-                placeholder="Enter Amount (in $) "
-                value={downPayment}
-                onChange={(e) => setDownPayment(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              />
-            </div>
-            <div className="bg-purple-50 rounded-lg p-4 mb-6">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-700">Balance Amount : </span>
-                <span className="text-xl font-semibold text-purple-600">{`$ ${grandTotal - downPayment}`}</span>
+          :  <div className="bg-white rounded-lg w-full max-w-md mx-4 relative">
+          <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md space-y-6">
+            {/* Header */}
+            <div className="space-y-4">
+              <h1 className="text-2xl font-semibold text-indigo-900">Order Summary</h1>
+              <div className="bg-blue-50 p-2 rounded inline-block">
+                <span className="text-gray-600">Transaction ID</span>{' '}
+                <span className="font-medium">#1982</span>
               </div>
             </div>
-{/* 
-            <div className="relative">
-              <button
-                onClick={() => setLayawayTenure(layawayTenure ? '' : '3 months')}
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg text-left flex justify-between items-center"
-              >
-                <span className="text-gray-700">
-                  {layawayTenure || 'Choose Layaways Tenure'}
-                </span>
-                <ChevronDown className="w-5 h-5 text-gray-400" />
+    
+            {/* Customer Info */}
+            <div className="flex items-center justify-between py-2">
+              <div className="text-gray-700">
+                Customer: <span className="font-medium">{customer?.name}</span>
+              </div>
+              <button className="text-gray-400 hover:text-gray-600"   onClick={() => {setOpen(!open)}}>
+                <Pencil size={18} />
               </button>
-            </div> */}
-   
-             <div className="w-64">
- 
-             <div className="flex items-center justify-center bg-gray-50">
-      <div className="w-64">
-        <Select value={selectedTenure} onValueChange={setSelectedTenure}>
-          <SelectTrigger className="w-full bg-white">
-            <SelectValue placeholder="Choose Layaways Tenure" />
-          </SelectTrigger>
-          <SelectContent>
-          <SelectGroup>
-  {layawayOptions.map((option) => (
-    <SelectItem 
-      key={option.months} 
-      value={option.months.toString()}
-      className="py-3 px-4 hover:bg-gray-100"
-    >
-      <div className="flex justify-between items-center w-full gap-x-10">
-        <span>{option.months} Months</span>
-        <span className="text-gray-600">$ {option.amount}</span>
-      </div>
-    </SelectItem>
-  ))}
-</SelectGroup>
-          </SelectContent>
-        </Select>
-      </div>
+            </div>
+    
+            {/* Amount */}
+            <div className="bg-green-50 rounded-lg p-4">
+              <div className="text-center">
+                <div className="text-sm text-gray-600">Payable Amount</div>
+                <div className="text-3xl font-semibold text-green-600">{` $ ${grandTotal}`}</div>
+              </div>
+            </div>
+    
+            {/* Ordering for someone else */}
+            <div className="bg-orange-50 p-4 flex items-center justify-between">
+              <span className="text-gray-700">Ordering for someone else?</span>
+              <button className="text-orange-500 font-medium hover:text-orange-600  px-2 py-2" style={{border : '1px solid #FF8245'}}>
+                Add Details
+              </button>
+            </div>
+    
+            {/* Add Layaways */}
+            <button className="w-full border-2 border-indigo-900 text-indigo-900 rounded-lg py-3 font-medium hover:bg-indigo-50 transition" onClick={()=>setLayawayStatus(true)}>
+              Add Layaways
+            </button>
+            {layawayStatus && (
+  <div className="border border-gray-200 rounded-lg p-6">
+    <div className="flex justify-between items-center mb-6">
+      <h2 className="text-xl font-semibold text-gray-900">Layaways Details</h2>
+      <button className="text-gray-400 hover:text-gray-600" onClick={() => setLayawayStatus(false)} >
+        <X className="w-5 h-5" />
+      </button>
+    </div>
+
+    <div className="mb-6">
+      <label className="flex items-center gap-2 mb-4">
+        <span className="text-gray-700">Add down payment amount</span>
+      </label>
+      <input
+        type="text"
+        placeholder="Enter Amount (in $)"
+        value={downPayment}
+        onChange={(e) => setDownPayment(e.target.value)}
+        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+      />
+    </div>
+    <div className="bg-purple-50 rounded-lg p-4 mb-6">
+      <div className="flex justify-between items-center">
+        <span className="text-gray-700">Balance Amount : </span>
+        <span className="text-xl font-semibold text-purple-600">{`$ ${grandTotal - downPayment}`}</span>
       </div>
     </div>
-    <button className="w-full text-center py-3 mt-10 text-purple-600 rounded-sm mb-4" style={{ background: 'rgba(240, 240, 254, 1)', color: '#5542BA' }}>
-                + CREATE ORDER
-              </button>
-    
-          </div>
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              <PaymentMethod 
-                icon={<img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/receipt.svg" alt="Cheque" className="w-6 h-6" />}
-                label="Cheque"
-              />
-              <PaymentMethod 
-                icon={<img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/wallet.svg" alt="Venmo" className="w-6 h-6" />}
+
+    <div className="w-64">
+      <div className="flex items-center justify-center bg-gray-50">
+        <div className="w-64">
+          <Select value={selectedTenure} onValueChange={setSelectedTenure}>
+            <SelectTrigger className="w-full bg-white">
+              <SelectValue placeholder="Choose Layaways Tenure" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {layawayOptions.map((option) => (
+                  <SelectItem 
+                    key={option.months} 
+                    value={option.months.toString()}
+                    className="py-3 px-4 hover:bg-gray-100"
+                  >
+                    <div className="flex justify-between items-center w-full gap-x-10">
+                      <span>{option.months} Months</span>
+                      <span className="text-gray-600">$ {option.amount}</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+    </div>
+  </div>
+)}  
+            {/* Payment Options */}
+            <div className="grid grid-cols-2 gap-4">
+              <PaymentOption
+                icon={<img src={venmo} alt="Venmo" className="w-10 h-10" />}
                 label="Venmo"
+                bgColor="bg-blue-50 text-blue-600"
               />
-              <PaymentMethod 
-                icon={<img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/gift.svg" alt="Gift Card" className="w-6 h-6" />}
-                label="Gift Card"
-              />
-              <PaymentMethod 
-                icon={<img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/landmark.svg" alt="Zelle" className="w-6 h-6" />}
+              <PaymentOption
+                icon={<img src={zelle} alt="Zelle" className="w-10 h-10" />}
                 label="Zelle"
+                bgColor="bg-purple-50 text-purple-600"
               />
-              <PaymentMethod 
-                icon={<Banknote className="w-6 h-6" />}
+              <PaymentOption
+                icon={<img src={cash} alt="Zelle" className="w-10 h-10" />}
                 label="Cash"
+                bgColor="bg-green-50 text-green-600"
               />
-              <PaymentMethod 
-                icon={<CreditCard className="w-6 h-6" />}
+              <PaymentOption
+                icon={<img src={card} alt="Zelle" className="w-10 h-10" />}
                 label="Card"
+                bgColor="bg-orange-50 text-orange-600"
               />
             </div>
     
-            <button className="w-full bg-red-400 text-white font-medium py-3 rounded-lg hover:bg-red-500 transition-colors" onClick={handleCancelModal}>
-              Cancel Order
-            </button>
+            {/* Action Buttons */}
+            <div className="grid grid-cols-2 gap-4 pt-4">
+              <button className="w-full border-2 border-indigo-900 text-indigo-900 rounded-lg py-3 font-medium hover:bg-indigo-50 transition" onClick={handleCancel}>
+                Cancel Order
+              </button>
+              <button className="w-full border-2 border-indigo-900 text-indigo-900 rounded-lg py-3 font-medium hover:bg-indigo-50 transition" onClick={()=>{setNextPage(false)}}>
+                Back
+              </button>
+            </div>
           </div>
-        </div>}
+        </div>
+          }
         </div> 
       </main>
     </div>
