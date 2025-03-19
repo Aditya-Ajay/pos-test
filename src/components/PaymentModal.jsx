@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { DollarSign } from 'lucide-react';
+import { useDispatch } from 'react-redux';
 
-function PaymentModal() {
+
+function PaymentModal({isModalOpen, setIsModalOpen, grandTotal , createOrder , orderData}) {
   const [amountReceived, setAmountReceived] = useState('');
+  const dispatch = useDispatch()
   
   const change = Number(amountReceived) - grandTotal;
 
@@ -18,7 +21,7 @@ function PaymentModal() {
       )}
 
       {/* Sliding Modal */}
-      <div className={`fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${
+      <div className={`fixed top-20 right-0 h-full w-full max-w-md bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${
         isModalOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
         <div className="p-6 h-full flex flex-col">
@@ -45,7 +48,9 @@ function PaymentModal() {
                 <label className="block text-gray-600 mb-2">Change To Be Given</label>
                 <input
                   type="text"
-                  value={`$${Math.max(0, change).toFixed(2)}`}
+                 value= {amountReceived - grandTotal > 0 ? (
+                    <span>{amountReceived - grandTotal}</span>
+                  ) : null}
                   readOnly
                   className="w-full p-2 bg-gray-50 border rounded-lg"
                 />
@@ -53,30 +58,15 @@ function PaymentModal() {
             </div>
           </div>
 
-          <div className="mt-auto space-y-4">
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h3 className="font-semibold mb-4">Cash Drawer Summary</h3>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Opening Balance:</span>
-                  <span>$400</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Current Balance:</span>
-                  <span>$700</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Total Transactions</span>
-                  <span>24</span>
-                </div>
-              </div>
-            </div>
+          <div className="mt-auto space-y-6 " style={{marginBottom : '20rem'}}>
+          
 
             <button
-              onClick={() => setIsModalOpen(false)}
+             onClick={()=>{dispatch(createOrder(orderData))}}
               className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors"
             >
               Complete Payment
+
             </button>
 
             <button

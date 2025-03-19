@@ -571,7 +571,6 @@ const handleAmountChange = ()=>{
                 label="Cash"
                 bgColor="bg-green-50 text-green-600"
                 onClick={() => {
-                  // dispatch(createOrder(orderData))
                   setPaymentTrue(true)
                         }}
               />
@@ -583,7 +582,7 @@ const handleAmountChange = ()=>{
             </div>
 
 
-{paymentTrue   && <PaymentModal isModalOpen={paymentTrue} setIsModalOpen={setPaymentTrue}  grandTotal={grandTotal} />}
+{paymentTrue   && <PaymentModal isModalOpen={paymentTrue} setIsModalOpen={setPaymentTrue}  grandTotal={grandTotal} createOrder={createOrder} orderData={orderData} />}
 
             {/* Action Buttons */}
             <div className="grid grid-cols-2 gap-4 pt-4">
