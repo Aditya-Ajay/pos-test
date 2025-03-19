@@ -13,6 +13,7 @@ export const handleSignIn = createAsyncThunk(
       const data = response.data;
       
       const decodedToken = jwtDecode(data.access_token);
+      console.log(decodedToken);
       if(decodedToken.role=="cashier"){
         window.location.href="/cashier-dashboard";
       }
