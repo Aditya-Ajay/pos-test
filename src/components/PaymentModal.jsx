@@ -3,12 +3,13 @@ import { DollarSign } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 
 
-function PaymentModal({isModalOpen, setIsModalOpen, grandTotal , createOrder , orderData}) {
+function PaymentModal({isModalOpen, setIsModalOpen, grandTotal , createOrder , orderData , successfull , error}) {
   const [amountReceived, setAmountReceived] = useState('');
   const dispatch = useDispatch()
+
+
   
   const change = Number(amountReceived) - grandTotal;
-
   return (
     <div className="min-h-screen bg-gray-100 p-8">
 
@@ -48,9 +49,7 @@ function PaymentModal({isModalOpen, setIsModalOpen, grandTotal , createOrder , o
                 <label className="block text-gray-600 mb-2">Change To Be Given</label>
                 <input
                   type="text"
-                 value= {amountReceived - grandTotal > 0 ? (
-                    <span>{amountReceived - grandTotal}</span>
-                  ) : null}
+                 value= {amountReceived-grandTotal}
                   readOnly
                   className="w-full p-2 bg-gray-50 border rounded-lg"
                 />

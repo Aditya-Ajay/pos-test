@@ -1,7 +1,6 @@
 import React, { useState, useEffect  , useRef} from 'react';
 import { Search, Bell, Settings, ChevronDown, Mail, UserCircle2, Scan,User, ArrowBigLeft, ArrowBigRight, Edit2 } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
-import logo from "../assets/solis_pos.png"
 import scanner from "../assets/scanner-removebg-preview.png"
 import CustomerInformation from './CustomerInformation';
 import { fetchProductById, removeProduct } from '../redux/Product/ProductSlice';
@@ -40,7 +39,8 @@ function PaymentOption({ icon, label, bgColor , onClick  }) {
 function App() {
   const products = useSelector((state) => state?.product?.products);
   const customer = useSelector((state) => state?.customer?.customer);
-  const order = useSelector((state)=> state?.order?.sucessfull);
+  const successfull = useSelector((state)=> state?.order?.sucessfull);
+  const error = useSelector((state)=>state?.order?.error);
   const orderDetails = useSelector((state)=> state?.order?.order);
   console.log(orderDetails)
   const [selectedTenure, setSelectedTenure] = useState("");
@@ -582,7 +582,7 @@ const handleAmountChange = ()=>{
             </div>
 
 
-{paymentTrue   && <PaymentModal isModalOpen={paymentTrue} setIsModalOpen={setPaymentTrue}  grandTotal={grandTotal} createOrder={createOrder} orderData={orderData} />}
+{paymentTrue   && <PaymentModal isModalOpen={paymentTrue} setIsModalOpen={setPaymentTrue}  grandTotal={grandTotal} createOrder={createOrder} orderData={orderData}  successfull={successfull} error={error}/>}
 
             {/* Action Buttons */}
             <div className="grid grid-cols-2 gap-4 pt-4">
