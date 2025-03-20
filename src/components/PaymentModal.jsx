@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { DollarSign } from 'lucide-react';
 import { useDispatch } from 'react-redux';
+import { PaymentSuccessModal } from './SuccessModal';
 
 
 function PaymentModal({isModalOpen, setIsModalOpen, grandTotal , createOrder , orderData , successfull , error}) {
@@ -56,18 +57,20 @@ function PaymentModal({isModalOpen, setIsModalOpen, grandTotal , createOrder , o
               </div>
             </div>
           </div>
+          {successfull && <PaymentSuccessModal successfull={successfull} error={error} />}
 
           <div className="mt-auto space-y-6 " style={{marginBottom : '20rem'}}>
           
 
             <button
-             onClick={()=>{dispatch(createOrder(orderData))}}
-              className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors"
-            >
+             onClick={()=>{
+              dispatch(createOrder(orderData))
+              setModal(false);
+            }
+            }
+              className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors">
               Complete Payment
-
             </button>
-
             <button
               onClick={() => setIsModalOpen(false)}
               className="w-full border border-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-50 transition-colors"
