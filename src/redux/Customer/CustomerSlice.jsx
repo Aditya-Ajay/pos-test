@@ -52,10 +52,10 @@ export const newCustomers = createAsyncThunk(
 
 export const fetchTopCustomers = createAsyncThunk(
   "fetchTopCustomers",
-  async (count = 10, { rejectWithValue }) => {
+  async (limit = 7, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${BASE_URL}/customers/list`, {
-        params: { count },
+        params: { limit },
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

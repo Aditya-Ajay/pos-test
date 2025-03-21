@@ -136,7 +136,7 @@ export const RepairForm = () => {
           </div>
 
           {/* Payment Detail Section */}
-          <div className="space-y-8">
+          <div className="space-y-8 ">
             <h2 className="font-inter-20px-medium text-foundation-greygrey-900" style={{ fontSize: "20px", fontWeight: '500', color: '#39322F' }}>Payment Detail</h2>
             <div className="space-y-6">
               <div className="flex items-start gap-6 w-full">
@@ -148,7 +148,7 @@ export const RepairForm = () => {
                 ))}
               </div>
 
-              <div className="flex items-start gap-6">
+              <div className="flex items-start gap-6 w-[66%]">
                 <div className="relative flex-1">
                   <label className="absolute top-[-10px] left-3 bg-white px-1 text-sm text-gray-600" style={{ fontSize: "11px", fontWeight: '400', color: '#222526' }}>Advance Payment (if any)</label>
                   <input type="number" id="advancePayment" placeholder="Input" className="w-full focus:outline-none border border-solid border-[#c9cbcc] rounded px-4 pt-5 pb-2 text-[#4B4F53] text-[14px] font-[400] placeholder:text-[#4B4F53] placeholder:text-[14px] placeholder:font-[400]" />
