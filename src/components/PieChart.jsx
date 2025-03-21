@@ -28,8 +28,8 @@ console.log('customerData',customerData)
         { name: "Repeat Customer", value: customerData.repeatCustomers.count,growthPercentage:customerData.repeatCustomers.growthPercentage, color: "#FF6313" }
       ]
     : [
-        { name: "New Customer", value: 400, color: "#302691" },
-        { name: "Repeat Customer", value: 300, color: "#FF6313" }
+        { name: "New Customer", value: '', color: "#302691" },
+        { name: "Repeat Customer", value: ' ', color: "#FF6313" }
       ];
 
 //   if (statusCustomerAnalytics === "loading") return <div className="relative inset-0 flex items-center justify-center bg-white bg-opacity-75 z-10  ">
