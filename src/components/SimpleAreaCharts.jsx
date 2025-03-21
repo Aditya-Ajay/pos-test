@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchRevenueAnalytics } from "../redux/Analytics/analyticsSlice";
 import {
   AreaChart,
   Area,
@@ -9,87 +11,80 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  { name: "Jan", value: 40000 },
-  { name: "Feb", value: 30000 },
-  { name: "Mar", value: 50000 },
-  { name: "Apr", value: 70000 },
-  { name: "May", value: 60000 },
-  { name: "Jun", value: 80000 },
-  { name: "Jul", value: 85000 },
-  { name: "Aug", value: 75000 },
-  { name: "Sep", value: 55000 },
-  { name: "Oct", value: 62000 },
-  { name: "Nov", value: 73000 },
-  { name: "Dec", value: 84000 },
-];
+function CustomAreaChart({ timeRange }) {
+  const dispatch = useDispatch();
+  const { revenueData ,statusRevenueAnalytics} = useSelector((state) => state.analytics);
 
+  useEffect(() => {
+    dispatch(fetchRevenueAnalytics(timeRange))
+  }, [dispatch, timeRange]);
 
-function CustomAreaChart() {
+  // Generate X-axis labels based on timeRange
+  const getXAxisLabels = ()  => {
+    switch (timeRange) {
+      case "today":
+        return Array.from({ length: 24 }, (_, i) => `${i % 12 || 12} ${i < 12 ? "AM" : "PM"} - ${(i + 1) % 12 || 12} ${i + 1 < 12 ? "AM" : "PM"}`);
+      case "week":
+        return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      case "month":
+        return ["Week 1", "Week 2", "Week 3", "Week 4"];
+      case "year":
+        return ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Septr", "Oct", "Nov", "Dec"];
+      default:
+        return [];
+    }
+  };
+
+  // Map revenueData to match the X-axis labels
+  const xAxisLabels = getXAxisLabels();
+  const chartData = xAxisLabels.map((label, index) => ({
+    name: label,
+    revenue: revenueData[index]?.revenue || 0,
+    profit: revenueData[index]?.profit || 0,
+  }));
+
   return (
-    <ResponsiveContainer width="100%" height={330} style={{marginTop:'4%'}}>
+    <div className="relative">
+      {statusRevenueAnalytics=== "loading" && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-75 z-10">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-500"></div>
+        </div>
+      )}
       
-      <AreaChart
-        data={data}
-        margin={{ top: 20, right: 30, left: 50, bottom: 20 }}
-      >
-        <CartesianGrid
-                  stroke="#206A47"
-          // strokeDasharray="3 3"
-          strokeOpacity={0.1}
-          vertical={false} // Removes vertical (Y-axis) grid lines
-        />
-        <defs>
-          <clipPath id="clip-path">
-            <rect x="0" y="0" width="100%" height="100%" />
-          </clipPath>
-        </defs>
+      <ResponsiveContainer width="100%" height={330} style={{ marginTop: "4%" }}>
+        <AreaChart data={chartData} margin={{ top: 20, right: 30, left: 50, bottom: 20 }}>
+          <CartesianGrid stroke="#206A47" strokeOpacity={0.1} vertical={false} />
 
-        {/* X Axis with Custom Font Size */}
-        <XAxis
-          dataKey="name"
-          tick={{ fill: "#4B4F53", fontSize: 14 }}
-          tickMargin={10} // Added margin for spacing between tick and graph
-        />
+          <defs>
+            <linearGradient id="colorGradientProfit" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#93F8BE" stopOpacity={1} />
+              <stop offset="100%" stopColor="#FFFFFF" stopOpacity={0.1} />
+            </linearGradient>
+            
+            <linearGradient id="colorGradientValue" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#B7E2E9" stopOpacity={1} />
+              <stop offset="100%" stopColor="#FFFFFF" stopOpacity={0.1} />
+            </linearGradient>
+          </defs>
 
-        {/* Y Axis with Hardcoded Coordinates */}
-        <YAxis
-          ticks={[0, 20000, 40000, 60000, 80000, 100000]} // Hardcoded tick values in raw numbers
-          tickFormatter={(value) => `$${(value / 1000).toFixed(0)}K`} // Format to display $0K, $20K, $40K, etc.
-          tick={{ fill: "#4B4F53", fontSize: 14 }}
-          axisLine={false}
-          tickLine={false}
-          tickMargin={10} // Added margin for spacing between tick and graph
-        />
-
-        <Tooltip />
-
-        
-
-        <defs>
-        <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0%" stopColor="#93F8BE" stopOpacity={1} />
-    <stop offset="30%" stopColor="#93F8BE" stopOpacity={0.9} />
-    <stop offset="50%" stopColor="#93F8BE" stopOpacity={0.7} />
-    <stop offset="60%" stopColor="#93F8BE" stopOpacity={0.5} />
-    <stop offset="80%" stopColor="#CFFFE0" stopOpacity={0.3} />
-    <stop offset="90%" stopColor="#FFFFFF" stopOpacity={0.15} />
-    <stop offset="100%" stopColor="#FFFFFF" stopOpacity={0.1} />
-</linearGradient>
-
-        </defs>
-
-        <Area
-          type="monotone"
-          dataKey="value"
-          stroke="#24983F"
-          strokeWidth={3}
-          fill="url(#colorGradient)"
-          clipPath="url(#clip-path)"
-        />
-      </AreaChart>
-    </ResponsiveContainer>
+          <XAxis dataKey="name" tick={{ fill: "#4B4F53", fontSize: 14 }} tickMargin={10} />
+          <YAxis
+            tickFormatter={(value) => `$${(value / 1000).toFixed(0)}K`}
+            tick={{ fill: "#4B4F53", fontSize: 14 }}
+            axisLine={false}
+            tickLine={false}
+            tickMargin={10}
+          />
+          
+          <Tooltip />
+          
+          <Area type="monotone" dataKey="profit" stroke="#24983F" strokeWidth={3} fill="url(#colorGradientProfit)" />
+          <Area type="monotone" dataKey="revenue" stroke="#1593A7" strokeWidth={3} fill="url(#colorGradientValue)" />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
   );
 }
 
 export default CustomAreaChart;
+  

@@ -18,7 +18,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { useLocation } from "react-router-dom";
 
+import Sidebar from './Sidebar';
 import bin from "../assets/bin.png"
 import edit from "../assets/edit.png"
 import Setting from "../assets/Setting.png"
@@ -243,11 +245,14 @@ const handleAmountChange = ()=>{
       dispatch(fetchProductById(value));
     }
   };
-
+  const location = useLocation();
+  const showSidebar = location.pathname.includes("admin-dashboard/pos");
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="flex bg-gray-50 w-full h-[100%] overflow-hidden">
+      {showSidebar &&<Sidebar activemenu={'POS'} />}
+
+    <div className="flex-1 p-[1%] ">
       {/* Header */}
-     
 
       {open && <CustomerInformation open={open} setOpen={setOpen} />}
       {showModal && <CancelModal isOpen={showModal} onClose={()=>setShowModal(false)} onConfirm={()=>setShowModal(false)} />}
@@ -598,6 +603,7 @@ const handleAmountChange = ()=>{
           }
         </div> 
       </main>
+    </div>
     </div>
   );
 }
