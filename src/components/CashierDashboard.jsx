@@ -1,7 +1,6 @@
 import React, { useState, useEffect  , useRef} from 'react';
 import { Search, Bell, Settings, ChevronDown, Mail, UserCircle2, Scan,User, ArrowBigLeft, ArrowBigRight, Edit2 } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
-import logo from "../assets/solis_pos.png"
 import scanner from "../assets/scanner-removebg-preview.png"
 import CustomerInformation from './CustomerInformation';
 import { fetchProductById, removeProduct } from '../redux/Product/ProductSlice';
@@ -27,10 +26,11 @@ import edit from "../assets/edit.png"
 import Setting from "../assets/Setting.png"
 import { createOrder } from '../redux/Order/OrderSlice';
 import { RepairForm } from './RepairForm';
+import PaymentModal from './PaymentModal';
 
-function PaymentOption({ icon, label, bgColor }) {
+function PaymentOption({ icon, label, bgColor , onClick  }) {
   return (
-    <button className={`${bgColor} rounded-lg p-4 flex items-center gap-3 w-full transition hover:opacity-90`}>
+    <button className={`${bgColor} rounded-lg p-4 flex items-center gap-3 w-full transition hover:opacity-90`} onClick={onClick}>
       {icon}
       <span className="font-medium">{label}</span>
     </button>
@@ -41,7 +41,8 @@ function PaymentOption({ icon, label, bgColor }) {
 function App() {
   const products = useSelector((state) => state?.product?.products);
   const customer = useSelector((state) => state?.customer?.customer);
-  const order = useSelector((state)=> state?.order?.sucessfull);
+  const successfull = useSelector((state)=> state?.order?.sucessfull);
+  const error = useSelector((state)=>state?.order?.error);
   const orderDetails = useSelector((state)=> state?.order?.order);
   console.log(orderDetails)
   const [selectedTenure, setSelectedTenure] = useState("");
@@ -55,6 +56,7 @@ function App() {
   const [downPayment , setDownPayment] = useState('')
   const [layawayTenure , setLayawayTenure] = useState('')
   const [layawayStatus , setLayawayStatus] = useState(false)
+  const [paymentTrue , setPaymentTrue] = useState(false)
   const dispatch = useDispatch();
 
 
@@ -63,6 +65,9 @@ function App() {
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
   };
+
+
+ 
 
 
   
@@ -142,7 +147,7 @@ function App() {
   const orderData = {
     customerId : customer?._id,
     items: products.map(product => ({ inventoryId: product?._id })) , 
-    discountPercentage : discountPercentage?.current?.value , 
+    discountPercentage : discountPercentage?.current?.value ,
   }
 
   const confirmOrder  =()=>{
@@ -558,6 +563,8 @@ const handleAmountChange = ()=>{
                 icon={<img src={venmo} alt="Venmo" className="w-10 h-10" />}
                 label="Venmo"
                 bgColor="bg-blue-50 text-blue-600"
+              
+
               />
               <PaymentOption
                 icon={<img src={zelle} alt="Zelle" className="w-10 h-10" />}
@@ -568,6 +575,9 @@ const handleAmountChange = ()=>{
                 icon={<img src={cash} alt="Zelle" className="w-10 h-10" />}
                 label="Cash"
                 bgColor="bg-green-50 text-green-600"
+                onClick={() => {
+                  setPaymentTrue(true)
+                        }}
               />
               <PaymentOption
                 icon={<img src={card} alt="Zelle" className="w-10 h-10" />}
@@ -575,7 +585,10 @@ const handleAmountChange = ()=>{
                 bgColor="bg-orange-50 text-orange-600"
               />
             </div>
-    
+
+
+{paymentTrue   && <PaymentModal isModalOpen={paymentTrue} setIsModalOpen={setPaymentTrue}  grandTotal={grandTotal} createOrder={createOrder} orderData={orderData}  successfull={successfull} error={error}/>}
+
             {/* Action Buttons */}
             <div className="grid grid-cols-2 gap-4 pt-4">
               <button className="w-full border-2 border-indigo-900 text-indigo-900 rounded-lg py-3 font-medium hover:bg-indigo-50 transition" onClick={handleCancel}>
