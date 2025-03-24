@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchRevenueAnalytics } from "../redux/Analytics/analyticsSlice";
+import { fetchRevenueAnalytics } from "../redux/Analytics/analyticsSlice.jsx";
 import {
   AreaChart,
   Area,

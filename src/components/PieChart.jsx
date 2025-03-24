@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCustomerAnalytics, setPeriod } from "../redux/Analytics/analyticsSlice"; // Import the thunk and action
+import { fetchCustomerAnalytics, setPeriod } from "../redux/Analytics/analyticsSlice.jsx"; // Import the thunk and action
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import upArrowIcon from '../assets/UpArrow.png';
 import downArrowIcon from '../assets/downarrow.png';

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchAnalytics } from "../redux/Analytics/AnalyticsSlice";
+import { fetchAnalytics } from "../redux/Analytics/AnalyticsSlice.jsx";
 
 function TopSellingProducts() {
   const dispatch = useDispatch();
