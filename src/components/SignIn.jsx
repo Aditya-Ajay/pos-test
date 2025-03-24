@@ -4,7 +4,7 @@ import signinImage from "../assets/signin.png"
 import logo from "../assets/logo_img.png"
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { handleSignIn } from '../redux/SignIn/SignInSlice.jsx';
+import { handleSignIn } from '../redux/SignIn/SignInSlice';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL
 
