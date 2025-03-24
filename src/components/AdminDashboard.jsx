@@ -15,7 +15,7 @@ import downArrowIcon from '../assets/downarrow.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchTopCustomers } from '../redux/Customer/CustomerSlice'
-import { fetchOverviewAnalytics } from "../redux/Analytics/analyticsSlice";
+import { fetchOverviewAnalytics } from "../redux/Analytics/AnalyticsSlice";
 
 function StatCard({ icon: Icon, label, value, subValue, trend, growthPercentage  }) {
   return (
